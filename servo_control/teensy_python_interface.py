@@ -100,7 +100,7 @@ def cmd_getAll(servo_id):
     writeToSerial(struct_var)
 
 def process_speed_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_speed_format))
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_speed_format) + 1)
     unpacked_reply = struct.unpack(replystruct_get_position_format, buffer)
     servo_id = unpacked_reply[0]
     speed = unpacked_reply[1]
@@ -110,7 +110,7 @@ def process_speed_reply():
     print("speed: ", speed)
 
 def process_position_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_position_format))
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_position_format) + 1)
     unpacked_reply = struct.unpack(replystruct_get_position_format, buffer)
     servo_id = unpacked_reply[0]
     position = unpacked_reply[1]
@@ -120,7 +120,7 @@ def process_position_reply():
     print("position: ", position)
 
 def process_volt_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_volt_format))
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_volt_format) + 1)
     unpacked_reply = struct.unpack(replystruct_get_volt_format, struct.calcsize(replystruct_get_volt_format))
     servo_id = unpacked_reply[0]
     volt = unpacked_reply[1]
@@ -130,7 +130,7 @@ def process_volt_reply():
     print("volt: ", volt)
 
 def process_temp_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_temp_format))
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_temp_format) + 1)
     unpacked_reply = struct.unpack(replystruct_get_temp_format, buffer)
     servo_id = unpacked_reply[0]
     temp = unpacked_reply[1]
@@ -140,7 +140,7 @@ def process_temp_reply():
     print("temp: ", temp)
 
 def process_is_moving_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_is_moving_format))
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_is_moving_format) + 1)
     unpacked_reply = struct.unpack(replystruct_get_is_moving_format, buffer)
     servo_id = unpacked_reply[0]
     is_moving = unpacked_reply[1]
@@ -150,7 +150,7 @@ def process_is_moving_reply():
     print("is_moving: ", is_moving)
 
 def process_all_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_all_format))
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_all_format) + 1)
     unpacked_reply = struct.unpack(replystruct_get_all_format, buffer)
     servo_id = unpacked_reply[0]
     position = unpacked_reply[1]
