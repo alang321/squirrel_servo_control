@@ -7,7 +7,7 @@ from time import sleep
 from math import floor
 
 START_BYTE = b'\x9A'
-struct_str_cmd_add_servo = '<bBB'
+struct_str_cmd_set_serial_port = '<B'
 struct_str_cmd_enable_driver = '<bB?'
 struct_str_cmd_set_speed = '<bBh'
 struct_str_cmd_add_pos = '<bBh'
@@ -22,7 +22,7 @@ struct_str_reply_get_volt = '<BBb'
 struct_str_reply_get_temp = '<BBb'
 
 cmd_identifier = {
-    'add_servo': 0,
+    'set_serial_port': 0,
     'enable_servo': 1,
     'set_speed': 1,
     'set_position': 2,
@@ -38,8 +38,8 @@ def writeToSerial(payload_out):
     serial_connection.write(payload_out)
     serial_connection.flush()
 
-def cmd_addServo(servo_id, port_id):
-    struct_var = struct.pack(struct_str_cmd_add_servo, cmd_identifier['add_servo'], servo_id, port_id)
+def cmd_setSerialPort(servo_id, port_id):
+    struct_var = struct.pack(struct_str_cmd_add_servo, cmd_identifier['set_serial_port'], servo_id)
     writeToSerial(struct_var)
 
 def cmd_enableServo(servo_id, enable):
@@ -77,9 +77,13 @@ print("Connection Opened")
 
 if not serial_connection.isOpen():
     serial_connection.open()
+print("Set Serial Port")
+cmd_setSerialPort(1)
 
-cmd_addServo(9, 1)
+time.sleep(5)
 
+
+print("Set Speed")
 cmd_setSpeed(9, 1000)
 
 print("finished")
