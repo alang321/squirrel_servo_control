@@ -108,7 +108,7 @@ def process_speed_reply():
     print("servo_id: ", servo_id)
     print("speed: ", speed)
 
-def process_position_reply(unpacked_reply):
+def process_position_reply():
     unpacked_reply = struct.unpack(replystruct_get_position_format, struct.calcsize(replystruct_get_position_format))
     servo_id = unpacked_reply[0]
     position = unpacked_reply[1]
@@ -117,7 +117,7 @@ def process_position_reply(unpacked_reply):
     print("servo_id: ", servo_id)
     print("position: ", position)
 
-def process_volt_reply(unpacked_reply):
+def process_volt_reply():
     unpacked_reply = struct.unpack(replystruct_get_volt_format, struct.calcsize(replystruct_get_volt_format))
     servo_id = unpacked_reply[0]
     volt = unpacked_reply[1]
@@ -126,7 +126,7 @@ def process_volt_reply(unpacked_reply):
     print("servo_id: ", servo_id)
     print("volt: ", volt)
 
-def process_temp_reply(unpacked_reply):
+def process_temp_reply():
     unpacked_reply = struct.unpack(replystruct_get_temp_format, struct.calcsize(replystruct_get_temp_format))
     servo_id = unpacked_reply[0]
     temp = unpacked_reply[1]
@@ -135,7 +135,7 @@ def process_temp_reply(unpacked_reply):
     print("servo_id: ", servo_id)
     print("temp: ", temp)
 
-def process_is_moving_reply(unpacked_reply):
+def process_is_moving_reply():
     unpacked_reply = struct.unpack(replystruct_get_is_moving_format, struct.calcsize(replystruct_get_is_moving_format))
     servo_id = unpacked_reply[0]
     is_moving = unpacked_reply[1]
@@ -144,7 +144,7 @@ def process_is_moving_reply(unpacked_reply):
     print("servo_id: ", servo_id)
     print("is_moving: ", is_moving)
 
-def process_all_reply(unpacked_reply):
+def process_all_reply():
     unpacked_reply = struct.unpack(replystruct_get_all_format, struct.calcsize(replystruct_get_all_format))
     servo_id = unpacked_reply[0]
     position = unpacked_reply[1]
