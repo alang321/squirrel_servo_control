@@ -39,36 +39,36 @@ def writeToSerial(payload_out):
     serial_connection.flush()
 
 def cmd_addServo(servo_id, port_id):
-    struct = struct.pack(struct_str_cmd_add_servo, cmd_identifier['add_identifier'], servo_id, port_id)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_add_servo, cmd_identifier['add_identifier'], servo_id, port_id)
+    writeToSerial(struct_var)
 
 def cmd_enableServo(servo_id, enable):
-    struct = struct.pack(struct_str_cmd_enable_driver, cmd_identifier['enable_servo'], servo_id, enable)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_enable_driver, cmd_identifier['enable_servo'], servo_id, enable)
+    writeToSerial(struct_var)
 
 def cmd_setSpeed(servo_id, speed):
-    struct = struct.pack(struct_str_cmd_set_speed, cmd_identifier['set_speed'], servo_id, speed)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_set_speed, cmd_identifier['set_speed'], servo_id, speed)
+    writeToSerial(struct_var)
 
 def cmd_setPosition(servo_id, position):
-    struct = struct.pack(struct_str_cmd_add_pos, cmd_identifier['set_position'], servo_id, position)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_add_pos, cmd_identifier['set_position'], servo_id, position)
+    writeToSerial(struct_var)
 
 def cmd_getSpeed(servo_id):
-    struct = struct.pack(struct_str_cmd_get_spd, cmd_identifier['get_speed'], servo_id)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_get_spd, cmd_identifier['get_speed'], servo_id)
+    writeToSerial(struct_var)
 
 def cmd_getPosition(servo_id):
-    struct = struct.pack(struct_str_cmd_get_pos, cmd_identifier['get_position'], servo_id)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_get_pos, cmd_identifier['get_position'], servo_id)
+    writeToSerial(struct_var)
 
 def cmd_getVolt(servo_id):
-    struct = struct.pack(struct_str_cmd_get_volt, cmd_identifier['get_volt'], servo_id)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_get_volt, cmd_identifier['get_volt'], servo_id)
+    writeToSerial(struct_var)
 
 def cmd_getTemp(servo_id):
-    struct = struct.pack(struct_str_cmd_get_temp, cmd_identifier['get_temp'], servo_id)
-    writeToSerial(struct)
+    struct_var = struct.pack(struct_str_cmd_get_temp, cmd_identifier['get_temp'], servo_id)
+    writeToSerial(struct_var)
 
 
 serial_connection = serial.Serial(port='/dev/serial0', baudrate=115200,timeout=None, bytesize=serial.EIGHTBITS)
