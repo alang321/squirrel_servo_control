@@ -171,8 +171,9 @@ reply_handlers = {
 }
 
 def receive_Message():
-    reply_identifier = serial_connection.read(1)
-    print("Reply:" + reply_identifier)
+    #read first byte and convert to int
+    reply_identifier = int.from_bytes(serial_connection.read(1), byteorder='little')
+    print("Reply:", reply_identifier)
 
     reply_handlers[reply_identifier]()
 
