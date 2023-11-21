@@ -9,7 +9,7 @@ from math import floor
 START_BYTE = b'\x9A'
 struct_str_cmd_set_serial_port = '<bB'
 struct_str_cmd_enable_driver = '<bB?'
-struct_str_cmd_set_speed = '<bBh'
+struct_str_cmd_set_speed = '<bBH'
 struct_str_cmd_add_pos = '<bBh'
 struct_str_cmd_get_pos = '<bB'
 struct_str_cmd_get_spd = '<bB'
