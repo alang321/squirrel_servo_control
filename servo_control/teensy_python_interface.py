@@ -48,6 +48,8 @@ def cmd_enableServo(servo_id, enable):
 
 def cmd_setSpeed(servo_id, speed):
     struct_var = struct.pack(struct_str_cmd_set_speed, cmd_identifier['set_speed'], servo_id, speed)
+    #print the buffer in hex
+    print(' '.join(hex(x) for x in struct_var))
     writeToSerial(struct_var)
 
 def cmd_setPosition(servo_id, position):
