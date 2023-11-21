@@ -83,14 +83,16 @@ if not serial_connection.isOpen():
 print("Set Serial Port")
 cmd_setSerialPort(1)
 
-sleep(5)
+sleep(2)
+print("Set velocity")
+cmd_setSpeed(9, 5000)
 
 while True:
-    sleep(3)
+    sleep(1)
     print("Set pos")
     cmd_setPosition(9, 1000)
 
-    sleep(3)
+    sleep(1)
 
     print("Set pos")
     cmd_setPosition(9, 4000)
