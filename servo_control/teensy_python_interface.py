@@ -80,7 +80,7 @@ if not serial_connection.isOpen():
 print("Set Serial Port")
 cmd_setSerialPort(1)
 
-time.sleep(5)
+sleep(5)
 
 
 print("Set Speed")
