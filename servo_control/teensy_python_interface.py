@@ -74,7 +74,9 @@ def cmd_getTemp(servo_id):
 serial_connection = serial.Serial(port='/dev/serial0', baudrate=115200,timeout=None, bytesize=serial.EIGHTBITS)
 print("Connection Opened")
 
-serial_connection.open()
+
+if not serial_connection.isOpen():
+    serial_connection.open()
 
 cmd_addServo(9, 1)
 
