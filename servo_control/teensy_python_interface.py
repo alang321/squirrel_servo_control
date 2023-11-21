@@ -85,9 +85,15 @@ cmd_setSerialPort(1)
 
 sleep(5)
 
+while True:
+    sleep(3)
+    print("Set pos")
+    cmd_setPosition(9, 1000)
 
-print("Set Speed")
-cmd_setSpeed(9, 1000)
+    sleep(3)
+
+    print("Set pos")
+    cmd_setPosition(9, 4000)
 
 print("finished")
 
