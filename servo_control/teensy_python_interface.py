@@ -38,8 +38,8 @@ def writeToSerial(payload_out):
     serial_connection.write(payload_out)
     serial_connection.flush()
 
-def cmd_setSerialPort(servo_id, port_id):
-    struct_var = struct.pack(struct_str_cmd_add_servo, cmd_identifier['set_serial_port'], servo_id)
+def cmd_setSerialPort(port_id):
+    struct_var = struct.pack(struct_str_cmd_add_servo, cmd_identifier['set_serial_port'], port_id)
     writeToSerial(struct_var)
 
 def cmd_enableServo(servo_id, enable):
