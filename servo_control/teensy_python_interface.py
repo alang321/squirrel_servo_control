@@ -7,7 +7,7 @@ from time import sleep
 from math import floor
 
 START_BYTE = b'\x9A'
-struct_str_cmd_set_serial_port = '<B'
+struct_str_cmd_set_serial_port = '<bB'
 struct_str_cmd_enable_driver = '<bB?'
 struct_str_cmd_set_speed = '<bBh'
 struct_str_cmd_add_pos = '<bBh'
