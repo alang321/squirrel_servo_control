@@ -24,12 +24,12 @@ struct_str_reply_get_temp = '<BBb'
 cmd_identifier = {
     'set_serial_port': 0,
     'enable_servo': 1,
-    'set_speed': 1,
-    'set_position': 2,
-    'get_speed': 3,
-    'get_position': 4,
-    'get_volt': 5,
-    'get_temp': 6
+    'set_speed': 2,
+    'set_position': 3,
+    'get_speed': 4,
+    'get_position': 5,
+    'get_volt': 6,
+    'get_temp': 7
 }
 
 
