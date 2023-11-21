@@ -7,6 +7,7 @@ from time import sleep
 from math import floor
 
 START_BYTE = b'\x9A'
+#sending messages
 struct_str_cmd_set_serial_port = '<bB'
 struct_str_cmd_enable_driver = '<bB?'
 struct_str_cmd_set_speed = '<bBh'
@@ -15,11 +16,17 @@ struct_str_cmd_get_pos = '<bB'
 struct_str_cmd_get_spd = '<bB'
 struct_str_cmd_get_volt = '<bB'
 struct_str_cmd_get_temp = '<bB'
+struct_str_cmd_get_is_moving = '<bB'
+struct_str_cmd_get_all = '<bB'
 
-struct_str_reply_get_pos = '<BBh'
-struct_str_reply_get_spd = '<BBh'
-struct_str_reply_get_volt = '<BBb'
-struct_str_reply_get_temp = '<BBb'
+
+#receiving messages
+replystruct_get_position_format = '<Bh'
+replystruct_get_speed_format = '<Bh'
+replystruct_get_volt_format = '<Bb'
+replystruct_get_temp_format = '<Bb'
+replystruct_get_is_moving_format = '<B?'
+replystruct_get_all_format = '<Bhhbb?'
 
 cmd_identifier = {
     'set_serial_port': 0,
@@ -29,7 +36,18 @@ cmd_identifier = {
     'get_speed': 4,
     'get_position': 5,
     'get_volt': 6,
-    'get_temp': 7
+    'get_temp': 7,
+    'get_is_moving': 8,
+    'get_all': 9
+}
+
+reply_identifier = {
+    'reply_get_speed_id': 0,
+    'reply_get_position_id': 1,
+    'reply_get_volt_id': 2,
+    'reply_get_temp_id': 3,
+    'reply_get_is_moving_id': 4,
+    'reply_get_all_id': 5
 }
 
 
@@ -73,6 +91,91 @@ def cmd_getTemp(servo_id):
     struct_var = struct.pack(struct_str_cmd_get_temp, cmd_identifier['get_temp'], servo_id)
     writeToSerial(struct_var)
 
+def cmd_getIsMoving(servo_id):
+    struct_var = struct.pack(struct_str_cmd_get_is_moving, cmd_identifier['get_is_moving'], servo_id)
+    writeToSerial(struct_var)
+
+def cmd_getAll(servo_id):
+    struct_var = struct.pack(struct_str_cmd_get_all, cmd_identifier['get_all'], servo_id)
+    writeToSerial(struct_var)
+
+def process_speed_reply():
+    unpacked_reply = struct.unpack(replystruct_get_speed_format, struct.calcsize(replystruct_get_speed_format))
+    servo_id = unpacked_reply[0]
+    speed = unpacked_reply[1]
+
+    print("Speed reply")
+    print("servo_id: ", servo_id)
+    print("speed: ", speed)
+
+def process_position_reply(unpacked_reply):
+    unpacked_reply = struct.unpack(replystruct_get_position_format, struct.calcsize(replystruct_get_position_format))
+    servo_id = unpacked_reply[0]
+    position = unpacked_reply[1]
+
+    print("Position reply")
+    print("servo_id: ", servo_id)
+    print("position: ", position)
+
+def process_volt_reply(unpacked_reply):
+    unpacked_reply = struct.unpack(replystruct_get_volt_format, struct.calcsize(replystruct_get_volt_format))
+    servo_id = unpacked_reply[0]
+    volt = unpacked_reply[1]
+
+    print("volt reply")
+    print("servo_id: ", servo_id)
+    print("volt: ", volt)
+
+def process_temp_reply(unpacked_reply):
+    unpacked_reply = struct.unpack(replystruct_get_temp_format, struct.calcsize(replystruct_get_temp_format))
+    servo_id = unpacked_reply[0]
+    temp = unpacked_reply[1]
+
+    print("temp reply")
+    print("servo_id: ", servo_id)
+    print("temp: ", temp)
+
+def process_is_moving_reply(unpacked_reply):
+    unpacked_reply = struct.unpack(replystruct_get_is_moving_format, struct.calcsize(replystruct_get_is_moving_format))
+    servo_id = unpacked_reply[0]
+    is_moving = unpacked_reply[1]
+
+    print("is_moving reply")
+    print("servo_id: ", servo_id)
+    print("is_moving: ", is_moving)
+
+def process_all_reply(unpacked_reply):
+    unpacked_reply = struct.unpack(replystruct_get_all_format, struct.calcsize(replystruct_get_all_format))
+    servo_id = unpacked_reply[0]
+    position = unpacked_reply[1]
+    speed = unpacked_reply[2]
+    volt = unpacked_reply[3]
+    temp = unpacked_reply[4]
+    is_moving = unpacked_reply[5]
+
+    print("all reply")
+    print("servo_id: ", servo_id)
+    print("position: ", position)
+    print("speed: ", speed)
+    print("volt: ", volt)
+    print("temp: ", temp)
+    print("is_moving: ", is_moving)
+
+reply_handlers = {
+    reply_identifier['reply_get_speed_id']: process_speed_reply,
+    reply_identifier['reply_get_position_id']: process_position_reply,
+    reply_identifier['reply_get_volt_id']: process_volt_reply,
+    reply_identifier['reply_get_temp_id']: process_temp_reply,
+    reply_identifier['reply_get_is_moving_id']: process_is_moving_reply,
+    reply_identifier['reply_get_all_id']: process_all_reply
+}
+
+def receive_Message():
+    reply_identifier = serial_connection.read(1)
+    print("Reply:" + reply_identifier)
+
+    reply_handlers[reply_identifier]()
+
 
 serial_connection = serial.Serial(port='/dev/serial0', baudrate=115200,timeout=None, bytesize=serial.EIGHTBITS)
 print("Connection Opened")
@@ -87,7 +190,11 @@ sleep(2)
 print("Set velocity")
 cmd_setSpeed(9, 5000)
 
+pos = 1
+
 while True:
+    cmd_getAll(9)
+
     sleep(1)
     print("Set pos")
     cmd_setPosition(9, 1000)
@@ -97,6 +204,11 @@ while True:
     print("Set pos")
     cmd_setPosition(9, 4000)
 
+    #check if there is a message in the buffer
+    if serial_connection.in_waiting > 0:
+        receive_Message()
+
+    sleep(1)
 print("finished")
 
         
