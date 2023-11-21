@@ -39,7 +39,7 @@ def writeToSerial(payload_out):
     serial_connection.flush()
 
 def cmd_addServo(servo_id, port_id):
-    struct_var = struct.pack(struct_str_cmd_add_servo, cmd_identifier['add_identifier'], servo_id, port_id)
+    struct_var = struct.pack(struct_str_cmd_add_servo, cmd_identifier['add_servo'], servo_id, port_id)
     writeToSerial(struct_var)
 
 def cmd_enableServo(servo_id, enable):
