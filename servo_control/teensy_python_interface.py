@@ -110,8 +110,8 @@ def process_speed_reply():
     print("speed: ", speed)
 
 def process_position_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_position_format))
-    unpacked_reply = struct.unpack(replystruct_get_position_format, buffer)
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_position_format) + 1)
+    unpacked_reply = struct.unpack(replystruct_get_position_format, buffer[:-1])
     servo_id = unpacked_reply[0]
     position = unpacked_reply[1]
 
@@ -120,8 +120,8 @@ def process_position_reply():
     print("position: ", position)
 
 def process_volt_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_volt_format))
-    unpacked_reply = struct.unpack(replystruct_get_volt_format, struct.calcsize(replystruct_get_volt_format))
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_volt_format) + 1)
+    unpacked_reply = struct.unpack(replystruct_get_volt_format, struct.calcsize(replystruct_get_volt_format)[:-1])
     servo_id = unpacked_reply[0]
     volt = unpacked_reply[1]
 
@@ -130,8 +130,8 @@ def process_volt_reply():
     print("volt: ", volt)
 
 def process_temp_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_temp_format))
-    unpacked_reply = struct.unpack(replystruct_get_temp_format, buffer)
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_temp_format) + 1)
+    unpacked_reply = struct.unpack(replystruct_get_temp_format, buffer[:-1])
     servo_id = unpacked_reply[0]
     temp = unpacked_reply[1]
 
@@ -140,8 +140,8 @@ def process_temp_reply():
     print("temp: ", temp)
 
 def process_is_moving_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_is_moving_format))
-    unpacked_reply = struct.unpack(replystruct_get_is_moving_format, buffer)
+    buffer = serial_connection.read(struct.calcsize(replystruct_get_is_moving_format) + 1)
+    unpacked_reply = struct.unpack(replystruct_get_is_moving_format, buffer[:-1])
     servo_id = unpacked_reply[0]
     is_moving = unpacked_reply[1]
 
