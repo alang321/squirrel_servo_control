@@ -4,7 +4,7 @@ from squirrel_servo_control.msg import servo_feedback
 from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
-from squirrel_servo_control import teensy_python_interface
+import teensy_python_interface
 
 def teensy_comm():
     rospy.init_node('squirrel_servo_node', anonymous=True)
