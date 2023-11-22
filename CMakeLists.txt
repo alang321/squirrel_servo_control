@@ -17,7 +17,6 @@ generate_messages(DEPENDENCIES std_msgs)
 
 catkin_install_python(PROGRAMS
   src/squirrel_servo_node.py
-  src/teensy_python_interface.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/squirrel_servo_control
 )
 install(FILES
