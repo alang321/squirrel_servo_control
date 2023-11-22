@@ -6,8 +6,8 @@ from squirrel_servo_control.msg import motor_speed
 
 def tester():
     rospy.init_node('servo_test_node', anonymous=True)
-    pub_speed = rospy.Publisher('servo_set_speed', servo_feedback, queue_size=10)
-    pub_pos = rospy.Publisher('servo_set_position', servo_feedback, queue_size=10)
+    pub_speed = rospy.Publisher('servo_set_speed', servo_speed, queue_size=10)
+    pub_pos = rospy.Publisher('servo_set_position', servo_position, queue_size=10)
 
     msg = servo_speed()
     msg.servo_id = 9
