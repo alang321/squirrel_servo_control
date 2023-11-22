@@ -191,13 +191,13 @@ def receive_Message():
     #read all bytes until the start marker and discard, start marker is 2 bytes 0xFF 0xFF
     counter = 0
     while True:
-        if serial_connection.read(1, timeout=0.1) == b'\xFF':
-            if serial_connection.read(1, timeout=0.1) == b'\xFF':
+        if serial_connection.read(1, timeout=0.05) == b'\xFF':
+            if serial_connection.read(1, timeout=0.05) == b'\xFF':
                 break
 
         #timeout after a few tries
         counter += 1
-        if counter > 5:
+        if counter > 10:
             print("Error, no start marker found")
             return None
 
