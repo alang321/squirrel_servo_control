@@ -26,8 +26,8 @@ def tester():
     servo_step = 15
     motor_step = 10
     current_pos_servo = 0
-    current_speed_motor1 = 1100
-    current_speed_motor2 = 1100
+    current_pos_motor1 = 1100
+    current_pos_motor2 = 1100
     id = 0
 
         
