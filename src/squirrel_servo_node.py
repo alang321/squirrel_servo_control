@@ -10,7 +10,7 @@ def teensy_comm():
     pub = rospy.Publisher('servo_feedback', servo_feedback, queue_size=10)
 
     #init serial port
-    teensy.verbose = True
+    teensy.verbose = False
     teensy.start_serial()
 
     teensy.cmd_setSerialPort(1)

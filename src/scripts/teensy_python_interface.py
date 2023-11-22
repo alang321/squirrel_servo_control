@@ -231,7 +231,7 @@ def receive_Message():
 
     return reply_identifier, data
 
-def start_serial(port='/dev/serial0', baudrate=115200):
+def start_serial(port='/dev/serial0', baudrate=230400):
     global serial_connection
     ser = serial.Serial(port=port, baudrate=baudrate,timeout=None, bytesize=serial.EIGHTBITS)
 
