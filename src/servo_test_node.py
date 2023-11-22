@@ -21,7 +21,7 @@ def tester():
 
     pub_speed.publish(msg)
     
-    rate = rospy.Rate(50) # 10hz
+    rate = rospy.Rate(1) # 10hz
 
     servo_step = 15
     motor_step = 10
