@@ -23,7 +23,7 @@ def tester():
     
     rate = rospy.Rate(1) # 10hz
 
-    servo_step = 15
+    servo_step = 100
     motor_step = 10
     current_pos_servo = 0
     current_pos_motor1 = 1100
@@ -33,42 +33,16 @@ def tester():
     return
 
     while not rospy.is_shutdown():
-        if id == 0:
-            msg = motor_speed()
-            msg.motor_id = 1
+        current_pos_servo += servo_step
+        if current_pos_servo >= 3000:
+            current_pos_servo = 0
 
-            current_pos_motor1 += motor_step
-            if current_pos_motor1 >= 1900:
-                current_pos_motor1 = 1000
-            
-            msg.pwm = current_pos_motor1
-            pub_motor_speed.publish(msg)
+        msg = servo_position()
+        msg.servo_id = 9
+        msg.position = 40
+        pub_pos.publish(msg)
 
-        if id == 1:
-            current_pos_servo += servo_step
-            if current_pos_servo >= 3000:
-                current_pos_servo = 0
-
-            msg = servo_position()
-            msg.servo_id = 9
-            msg.position = 40
-            pub_pos.publish(msg)
-
-        if id == 2:
-            msg = motor_speed()
-            msg.motor_id = 2
-
-            current_pos_motor2 += motor_step
-            if current_pos_motor2 >= 1900:
-                current_pos_motor2 = 1000
-            
-            msg.pwm = current_pos_motor2
-            pub_motor_speed.publish(msg)
-        
-        id += 1
-        id %= 3
-
-        rate.sleep()
+        time.sleep(1)
 
  
 
