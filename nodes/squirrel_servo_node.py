@@ -9,6 +9,10 @@ import teensy_python_interface
 def teensy_comm():
     rospy.init_node('squirrel_servo_node', anonymous=True)
     pub = rospy.Publisher('servo_feedback', servo_feedback, queue_size=10)
+
+    #init serial port
+    teensy_python_interface.start_serial()
+
     cmd_setSerialPort(1)
 
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
