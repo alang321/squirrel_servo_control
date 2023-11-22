@@ -92,7 +92,8 @@ replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_fo
 
 def writeToSerial(payload_out):
     global serial_connection
-    #serial_connection.write(START_BYTE)
+    serial_connection.write(b'\xFF')
+    serial_connection.write(b'\xFF')
     serial_connection.write(payload_out)
     serial_connection.flush()
 
@@ -187,7 +188,12 @@ def process_all_reply():
     return servo_id, position, speed, volt, temp, is_moving
 
 def receive_Message():
-    #read first byte and convert to int
+    #read all bytes until the start marker and discard, start marker is 2 bytes 0xFF 0xFF
+    while True:
+        if serial_connection.read(1, timeout=0.1) == b'\xFF':
+            if serial_connection.read(1) == b'\xFF':
+                break
+
     reply_identifier = int.from_bytes(serial_connection.read(1), byteorder='little')
     if verbose:
         print("Reply:", reply_identifier)
