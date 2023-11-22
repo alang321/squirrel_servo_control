@@ -25,7 +25,7 @@ install(FILES
 
 
 catkin_package(
-  CATKIN_DEPENDS rospy std_msgs message_generation message_runtime
+  CATKIN_DEPENDS rospy std_msgs message_runtime
 )
 
 include_directories(
