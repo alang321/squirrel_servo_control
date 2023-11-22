@@ -4,6 +4,34 @@ import struct
 verbose = True
 serial_connection = None
 
+
+cmd_identifier = {
+    'set_serial_port': 0,
+    'enable_servo': 1,
+    'set_speed': 2,
+    'set_position': 3,
+    'get_speed': 4,
+    'get_position': 5,
+    'get_volt': 6,
+    'get_temp': 7,
+    'get_is_moving': 8,
+    'get_all': 9,
+    'set_mode': 10,
+    'set_position_async': 11,
+    'set_speed_async': 12,
+    'trigger_action': 13,
+    'set_speed_motor': 14
+}
+
+reply_identifier = {
+    'reply_get_speed_id': 0,
+    'reply_get_position_id': 1,
+    'reply_get_volt_id': 2,
+    'reply_get_temp_id': 3,
+    'reply_get_is_moving_id': 4,
+    'reply_get_all_id': 5
+}
+
 #START_BYTE = b'\x9A'
 #sending messages
 struct_str_cmd_set_serial_port = '<bB'
@@ -54,32 +82,6 @@ replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_fo
                 reply_identifier['reply_get_all_id']: replystruct_get_all_format
                 }
 
-cmd_identifier = {
-    'set_serial_port': 0,
-    'enable_servo': 1,
-    'set_speed': 2,
-    'set_position': 3,
-    'get_speed': 4,
-    'get_position': 5,
-    'get_volt': 6,
-    'get_temp': 7,
-    'get_is_moving': 8,
-    'get_all': 9,
-    'set_mode': 10,
-    'set_position_async': 11,
-    'set_speed_async': 12,
-    'trigger_action': 13,
-    'set_speed_motor': 14
-}
-
-reply_identifier = {
-    'reply_get_speed_id': 0,
-    'reply_get_position_id': 1,
-    'reply_get_volt_id': 2,
-    'reply_get_temp_id': 3,
-    'reply_get_is_moving_id': 4,
-    'reply_get_all_id': 5
-}
 
 
 def writeToSerial(payload_out):
