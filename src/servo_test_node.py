@@ -7,11 +7,11 @@ import time
 
 def tester():
     rospy.init_node('servo_test_node', anonymous=True)
-    pub_speed = rospy.Publisher('servo_set_speed', servo_speed, queue_size=10)
-    pub_pos = rospy.Publisher('servo_set_position', servo_position, queue_size=10)
-    pub_motor_speed = rospy.Publisher('motor_set_speed', motor_speed, queue_size=10)
+    pub_speed = rospy.Publisher('servo_set_speed', servo_speed, queue_size=1)
+    pub_pos = rospy.Publisher('servo_set_position', servo_position, queue_size=1)
+    pub_motor_speed = rospy.Publisher('motor_set_speed', motor_speed, queue_size=1)
 
-    time.sleep(1)
+    time.sleep(.5)
 
     msg = servo_speed()
     msg.servo_id = 9

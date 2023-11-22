@@ -7,7 +7,7 @@ import scripts.teensy_python_interface as teensy
 
 def teensy_comm():
     rospy.init_node('squirrel_servo_node', anonymous=True)
-    pub = rospy.Publisher('servo_feedback', servo_feedback, queue_size=10)
+    pub = rospy.Publisher('servo_feedback', servo_feedback, queue_size=1)
 
     #init serial port
     teensy.verbose = False
