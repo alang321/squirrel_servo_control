@@ -30,7 +30,7 @@ def tester():
     current_pos_motor2 = 1100
     id = 0
 
-        
+    return
 
     while not rospy.is_shutdown():
         if id == 0:
