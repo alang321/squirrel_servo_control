@@ -13,7 +13,7 @@ def teensy_comm():
     #init serial port
     teensy_python_interface.start_serial()
 
-    cmd_setSerialPort(1)
+    teensy_python_interface.cmd_setSerialPort(1)
 
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
@@ -42,15 +42,15 @@ def teensy_comm():
     #    rate.sleep()
 
 def callback_speed(cmd_speed):
-    cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
+    teensy_python_interface.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
     rospy.loginfo("Set speed command:", cmd_speed.speed, "for servo:", cmd_speed.servo_id)
 
 def callback_position(cmd_pos):
-    cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
+    teensy_python_interface.cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
     rospy.loginfo("Set position command:", cmd_pos.position, "for servo:", cmd_pos.servo_id)
 
 def callback_motor_speed(cmd_speed):
-    cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
+    teensy_python_interface.cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
     rospy.loginfo("Set motor speed command:", cmd_speed.pwm, "for motor:", cmd_speed.motor_id)
  
 
