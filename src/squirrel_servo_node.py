@@ -33,30 +33,11 @@ def teensy_comm():
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
-    duration = 1/6/len(servo_list)
+    #duration = 1/6/len(servo_list)
+    duration = 0.5
     rospy.Timer(rospy.Duration(duration), callback_timer)
 
     rospy.spin()
-
-    #rate = rospy.Rate(100) # 10hz
-
-    #while not rospy.is_shutdown():
-        #eqch loop request feedback from teensy
-
-        #then wait for response
-
-        #then publish response
-
-    #    msg = servo_feedback()
-    #    msg.time = rospy.get_time()
-    #    msg.position = 0
-    #    msg.speed = 0
-    #    msg.volt = 0
-    #    msg.temp = 0
-    #    pub.publish(servo_feedback())
-
-        #do some more clever stuff here
-    #    rate.sleep()
 
 def callback_timer(event):
     global servo_list
