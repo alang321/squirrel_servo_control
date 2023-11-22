@@ -83,9 +83,8 @@ def callback_timer(event):
         msg.temp = temp
         pub_feedback.publish(msg)
         #rospy.loginfo("Published feedback for servo:" + str(servo_id))
-    else:
+    #else:
         #rospy.loginfo("Unexpected reply identifier:" + str(reply_identifier))
-        continue
 
 
 def callback_speed(cmd_speed):
