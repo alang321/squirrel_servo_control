@@ -43,15 +43,15 @@ def teensy_comm():
 
 def callback_speed(cmd_speed):
     teensy.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
-    rospy.loginfo("Set speed command:", cmd_speed.speed, "for servo:", cmd_speed.servo_id)
+    rospy.loginfo(("Set speed command:" + str(cmd_speed.speed) + "for servo:" +  str(cmd_speed.servo_id)))
 
 def callback_position(cmd_pos):
     teensy.cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
-    rospy.loginfo("Set position command:", cmd_pos.position, "for servo:", cmd_pos.servo_id)
+    rospy.loginfo(("Set position command:" +  str(cmd_pos.position) + "for servo:" + str(cmd_pos.servo_id)))
 
 def callback_motor_speed(cmd_speed):
     teensy.cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
-    rospy.loginfo("Set motor speed command:", cmd_speed.pwm, "for motor:", cmd_speed.motor_id)
+    rospy.loginfo(("Set motor speed command:" + str(cmd_speed.pwm) + "for motor:" +  str(cmd_speed.motor_id)))
  
 
 
