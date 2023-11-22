@@ -13,6 +13,8 @@ def tester():
     msg.servo_id = 9
     msg.speed = 5000
 
+    rospy.loginfo("Set speed command:", msg.speed, "for servo:", msg.servo_id)
+
     pub_speed.publish(msg)
     
     rate = rospy.Rate(1) # 10hz
@@ -28,6 +30,8 @@ def tester():
         msg.servo_id = 9
         msg.position = current_pos
         pub_pos.publish(msg)
+
+        rospy.loginfo("Set position command:", msg.position, "for servo:", msg.servo_id)
         
         rate.sleep()
 
@@ -51,22 +55,11 @@ def tester():
         #do some more clever stuff here
     #    rate.sleep()
 
-def callback_speed(cmd_speed):
-    teensy.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
-    rospy.loginfo("Set speed command:", cmd_speed.speed, "for servo:", cmd_speed.servo_id)
-
-def callback_position(cmd_pos):
-    teensy.cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
-    rospy.loginfo("Set position command:", cmd_pos.position, "for servo:", cmd_pos.servo_id)
-
-def callback_motor_speed(cmd_speed):
-    teensy.cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
-    rospy.loginfo("Set motor speed command:", cmd_speed.pwm, "for motor:", cmd_speed.motor_id)
  
 
 
 if __name__ == '__main__':
     try:
-        teensy_comm()
+        tester()
     except rospy.ROSInterruptException:
         pass
