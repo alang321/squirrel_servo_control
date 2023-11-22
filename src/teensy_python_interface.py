@@ -21,7 +21,6 @@ struct_str_cmd_trigger_action = '<b'
 struct_str_cmd_set_motor_pwm = '<bBH'
 
 
-
 #receiving messages
 replystruct_get_position_format = '<Bh'
 replystruct_get_speed_format = '<Bh'
