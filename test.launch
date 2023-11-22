@@ -1,18 +1,6 @@
 <launch>
 
-	<node pkg="ws281x" name="led" type="ws281x_node" clear_params="true" output="screen">
-		<param name="led_count" value="2"/>
-		<param name="gpio_pin" value="18"/>
-		<param name="brightness" value="255"/>
-		<param name="strip_type" value="WS2812_STRIP"/>
-		<param name="target_frequency" value="800000"/>
-		<param name="dma" value="10"/>
-		<param name="invert" value="false"/>
-	    </node>
-
-	<param name="num_leds" type="int" value="2"/>
-    
-	<node name="rainbow_led" type="rainbow_led_node" pkg="rainbow_led" output="screen"/>
+  	<node name="squirrel_servo_node" pkg="squirrel_servo_control" type="squirrel_servo_node.py" output="screen"/>
     
 </launch>
 
