@@ -191,8 +191,8 @@ def receive_Message():
     #read all bytes until the start marker and discard, start marker is 2 bytes 0xFF 0xFF
     counter = 0
     while True:
-        if serial_connection.read(1, timeout=0.05) == b'\xFF':
-            if serial_connection.read(1, timeout=0.05) == b'\xFF':
+        if serial_connection.read(1) == b'\xFF':
+            if serial_connection.read(1) == b'\xFF':
                 break
 
         #timeout after a few tries
@@ -217,7 +217,7 @@ def is_message_available():
 
 def start_serial(port='/dev/serial0', baudrate=230400):
     global serial_connection
-    ser = serial.Serial(port=port, baudrate=baudrate,timeout=None, bytesize=serial.EIGHTBITS)
+    ser = serial.Serial(port=port, baudrate=baudrate,timeout=0.1, bytesize=serial.EIGHTBITS)
 
     if not ser.isOpen():
         ser.open()
