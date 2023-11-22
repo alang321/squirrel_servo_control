@@ -46,11 +46,11 @@ cmd_identifier = {
     'get_temp': 7,
     'get_is_moving': 8,
     'get_all': 9,
-    'set_mode' = 10,
-    'set_position_async' = 11,
-    'set_speed_async' = 12,
-    'trigger_action' = 13,
-    'set_speed_motor' = 14
+    'set_mode': 10,
+    'set_position_async': 11,
+    'set_speed_async': 12,
+    'trigger_action': 13,
+    'set_speed_motor': 14
 }
 
 reply_identifier = {
