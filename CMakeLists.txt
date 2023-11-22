@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
+catkin_python_setup()
 
 add_message_files(DIRECTORY msg FILES motor_speed.msg servo_feedback.msg servo_position.msg servo_speed.msg)
 
@@ -23,7 +24,6 @@ install(FILES
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/squirrel_servo_control
 )
 
-catkin_python_setup()
 
 catkin_package(
   CATKIN_DEPENDS rospy std_msgs message_generation message_runtime
