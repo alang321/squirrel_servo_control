@@ -29,3 +29,9 @@ catkin_package(
   CATKIN_DEPENDS rospy std_msgs message_generation message_runtime
 )
 
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  include
+)
+
+
