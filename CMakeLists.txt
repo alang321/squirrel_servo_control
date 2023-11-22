@@ -14,8 +14,8 @@ add_message_files(DIRECTORY msg FILES motor_speed.msg servo_feedback.msg servo_p
 generate_messages(DEPENDENCIES std_msgs)
 
 catkin_install_python(PROGRAMS
-  src/listener.py
-  src/talker.py
+  nodes/squirrel_servo_node.py
+  scripts/teensy_python_interface.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/squirrel_servo_control
 )
 install(FILES
@@ -31,7 +31,6 @@ catkin_package(
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
-  include
 )
 
 
