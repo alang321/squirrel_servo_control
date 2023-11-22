@@ -60,13 +60,6 @@ def callback_timer(event):
     reply_identifier = message_in[0]
     data = message_in[1]
 
-    servo_id = data[0]
-    position = data[1]
-    speed = data[2]
-    volt = data[3]
-    temp = data[4]
-    is_moving = data[5]
-
     if reply_identifier == teensy.reply_identifier['reply_get_all_id']:
         servo_id = data[0]
         position = data[1]
@@ -83,6 +76,7 @@ def callback_timer(event):
         msg.volt = volt
         msg.temp = temp
         pub_feedback.publish(msg)
+        rospy.loginfo("Published feedback for servo:" + str(servo_id))
     else:
         rospy.loginfo("Unexpected reply identifier:" + str(reply_identifier))
 
