@@ -6,6 +6,7 @@ from squirrel_servo_control.msg import motor_speed
 import scripts.teensy_python_interface as teensy
 import time
 import json
+import std_msgs.msg
 
 servo_list = []
 current_servo_feedback_idx = 0
@@ -36,7 +37,7 @@ def teensy_comm():
     #rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
     #duration = 1/6/len(servo_list)
-    duration = 1
+    duration = 10
     rospy.Timer(rospy.Duration(duration), callback_timer)
 
     rospy.spin()
@@ -69,8 +70,12 @@ def callback_timer(event):
         is_moving = data[5]
 
         msg = servo_feedback()
+
+        h = std_msgs.msg.Header()
+        h.stamp = rospy.Time.now()
+
+        msg.header = h
         msg.servo_id = servo_id
-        msg.timestamp = rospy.get_time()
         msg.position = position
         msg.speed = speed
         msg.volt = volt
