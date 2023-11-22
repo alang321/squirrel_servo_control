@@ -51,7 +51,7 @@ def tester():
 
             msg = servo_position()
             msg.servo_id = 9
-            msg.position = 0
+            msg.position = 40
             pub_pos.publish(msg)
 
         if id == 2:
