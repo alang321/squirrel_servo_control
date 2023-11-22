@@ -32,9 +32,9 @@ def teensy_comm():
 
     teensy.cmd_setSerialPort(1)
 
-    #rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
-    #rospy.Subscriber("servo_set_position", servo_position, callback_position)
-    #rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
+    rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
+    rospy.Subscriber("servo_set_position", servo_position, callback_position)
+    rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
     #duration = 1/6/len(servo_list)
     duration = 10
