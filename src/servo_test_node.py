@@ -13,16 +13,16 @@ def tester():
     msg.servo_id = 9
     msg.speed = 5000
 
-    rospy.loginfo(("Set speed command:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
+    #rospy.loginfo(("Set speed command:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
 
     pub_speed.publish(msg)
     
-    rate = rospy.Rate(1) # 10hz
+    rate = rospy.Rate(10) # 10hz
 
     current_pos = 0
     while not rospy.is_shutdown():
         if current_pos == 0:
-            current_pos = 5000
+            current_pos = 100
         else:
             current_pos = 0
 
@@ -31,7 +31,7 @@ def tester():
         msg.position = current_pos
         pub_pos.publish(msg)
 
-        rospy.loginfo(("Set position command:" +  str(msg.position) + "for servo:" + str(msg.servo_id)))
+        #rospy.loginfo(("Set position command:" +  str(msg.position) + "for servo:" + str(msg.servo_id)))
         
         rate.sleep()
 
