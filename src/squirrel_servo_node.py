@@ -42,6 +42,7 @@ def teensy_comm():
 def callback_timer(event):
     global servo_list
     global pub_feedback
+    global current_servo_feedback_idx
     rospy.loginfo("Feedback Callback")
 
     servo_id = servo_list[current_servo_feedback_idx]
