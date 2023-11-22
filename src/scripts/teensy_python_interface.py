@@ -77,7 +77,7 @@ replystruct_get_load_format = '<Bh'
 replystruct_get_volt_format = '<Bb'
 replystruct_get_temp_format = '<Bb'
 replystruct_get_is_moving_format = '<B?'
-replystruct_get_all_format = '<Bhhbb?'
+replystruct_get_all_format = '<Bhhhbb?'
 
 replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_format,
                 reply_identifier['reply_get_position_id']: replystruct_get_position_format,
