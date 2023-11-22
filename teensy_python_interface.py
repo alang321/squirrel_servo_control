@@ -6,18 +6,24 @@ import struct
 from time import sleep
 from math import floor
 
-START_BYTE = b'\x9A'
+verbose = True
+
+#START_BYTE = b'\x9A'
 #sending messages
 struct_str_cmd_set_serial_port = '<bB'
 struct_str_cmd_enable_driver = '<bB?'
 struct_str_cmd_set_speed = '<bBh'
-struct_str_cmd_add_pos = '<bBh'
+struct_str_cmd_set_pos = '<bBh'
 struct_str_cmd_get_pos = '<bB'
 struct_str_cmd_get_spd = '<bB'
 struct_str_cmd_get_volt = '<bB'
 struct_str_cmd_get_temp = '<bB'
 struct_str_cmd_get_is_moving = '<bB'
 struct_str_cmd_get_all = '<bB'
+struct_str_cmd_set_mode = '<bBB'
+struct_str_cmd_trigger_action = '<b'
+struct_str_cmd_set_motor_pwm = '<bBH'
+
 
 
 #receiving messages
@@ -38,7 +44,12 @@ cmd_identifier = {
     'get_volt': 6,
     'get_temp': 7,
     'get_is_moving': 8,
-    'get_all': 9
+    'get_all': 9,
+    'set_mode' = 10,
+    'set_position_async' = 11,
+    'set_speed_async' = 12,
+    'trigger_action' = 13,
+    'set_speed_motor' = 14
 }
 
 reply_identifier = {
@@ -67,12 +78,33 @@ def cmd_enableServo(servo_id, enable):
 def cmd_setSpeed(servo_id, speed):
     struct_var = struct.pack(struct_str_cmd_set_speed, cmd_identifier['set_speed'], servo_id, speed)
     #print the buffer in hex
-    print(struct_var)
-    print(' '.join(hex(x) for x in struct_var))
+    if verbose:
+        print(struct_var)
+        print(' '.join(hex(x) for x in struct_var))
     writeToSerial(struct_var)
 
 def cmd_setPosition(servo_id, position):
-    struct_var = struct.pack(struct_str_cmd_add_pos, cmd_identifier['set_position'], servo_id, position)
+    struct_var = struct.pack(struct_str_cmd_set_pos, cmd_identifier['set_position'], servo_id, position)
+    writeToSerial(struct_var)
+
+def cmd_setMode(servo_id, mode):
+    struct_var = struct.pack(struct_str_cmd_set_mode, cmd_identifier['set_mode'], servo_id, mode)
+    writeToSerial(struct_var)
+
+def cmd_setPositionAsync(servo_id, position):
+    struct_var = struct.pack(struct_str_cmd_set_pos, cmd_identifier['set_position_async'], servo_id, position)
+    writeToSerial(struct_var)
+
+def cmd_setSpeedAsync(servo_id, speed):
+    struct_var = struct.pack(struct_str_cmd_set_speed, cmd_identifier['set_speed_async'], servo_id, speed)
+    writeToSerial(struct_var)
+
+def cmd_setSpeedMotor(motor_id, pwm):
+    struct_var = struct.pack(struct_str_cmd_set_motor_pwm, cmd_identifier['set_speed_motor'], motor_id, pwm)
+    writeToSerial(struct_var)
+
+def cmd_triggerAction():
+    struct_var = struct.pack(struct_str_cmd_trigger_action, cmd_identifier['trigger_action'])
     writeToSerial(struct_var)
 
 def cmd_getSpeed(servo_id):
@@ -105,9 +137,12 @@ def process_speed_reply():
     servo_id = unpacked_reply[0]
     speed = unpacked_reply[1]
 
-    print("Speed reply")
-    print("servo_id: ", servo_id)
-    print("speed: ", speed)
+    if verbose:
+        print("Speed reply")
+        print("servo_id: ", servo_id)
+        print("speed: ", speed)
+
+    return servo_id, speed
 
 def process_position_reply():
     buffer = serial_connection.read(struct.calcsize(replystruct_get_position_format) + 1)
@@ -115,9 +150,12 @@ def process_position_reply():
     servo_id = unpacked_reply[0]
     position = unpacked_reply[1]
 
-    print("Position reply")
-    print("servo_id: ", servo_id)
-    print("position: ", position)
+    if verbose:
+        print("Position reply")
+        print("servo_id: ", servo_id)
+        print("position: ", position)
+
+    return servo_id, position
 
 def process_volt_reply():
     buffer = serial_connection.read(struct.calcsize(replystruct_get_volt_format) + 1)
@@ -125,9 +163,12 @@ def process_volt_reply():
     servo_id = unpacked_reply[0]
     volt = unpacked_reply[1]
 
-    print("volt reply")
-    print("servo_id: ", servo_id)
-    print("volt: ", volt)
+    if verbose:
+        print("Volt reply")
+        print("servo_id: ", servo_id)
+        print("volt: ", volt)
+
+    return servo_id, volt
 
 def process_temp_reply():
     buffer = serial_connection.read(struct.calcsize(replystruct_get_temp_format) + 1)
@@ -135,19 +176,25 @@ def process_temp_reply():
     servo_id = unpacked_reply[0]
     temp = unpacked_reply[1]
 
-    print("temp reply")
-    print("servo_id: ", servo_id)
-    print("temp: ", temp)
+    if verbose:
+        print("temp reply")
+        print("servo_id: ", servo_id)
+        print("temp: ", temp)
+
+    return servo_id, temp
 
 def process_is_moving_reply():
     buffer = serial_connection.read(struct.calcsize(replystruct_get_is_moving_format) + 1)
     unpacked_reply = struct.unpack(replystruct_get_is_moving_format, buffer[:-1])
     servo_id = unpacked_reply[0]
     is_moving = unpacked_reply[1]
+    
+    if verbose:
+        print("is_moving reply")
+        print("servo_id: ", servo_id)
+        print("is_moving: ", is_moving)
 
-    print("is_moving reply")
-    print("servo_id: ", servo_id)
-    print("is_moving: ", is_moving)
+    return servo_id, is_moving
 
 def process_all_reply():
     buffer = serial_connection.read(struct.calcsize(replystruct_get_all_format) + 1)
@@ -159,13 +206,16 @@ def process_all_reply():
     temp = unpacked_reply[4]
     is_moving = unpacked_reply[5]
 
-    print("all reply")
-    print("servo_id: ", servo_id)
-    print("position: ", position)
-    print("speed: ", speed)
-    print("volt: ", volt)
-    print("temp: ", temp)
-    print("is_moving: ", is_moving)
+    if verbose:
+        print("all reply")
+        print("servo_id: ", servo_id)
+        print("position: ", position)
+        print("speed: ", speed)
+        print("volt: ", volt)
+        print("temp: ", temp)
+        print("is_moving: ", is_moving)
+    
+    return servo_id, position, speed, volt, temp, is_moving
 
 reply_handlers = {
     reply_identifier['reply_get_speed_id']: process_speed_reply,
@@ -181,7 +231,9 @@ def receive_Message():
     reply_identifier = int.from_bytes(serial_connection.read(1), byteorder='little')
     print("Reply:", reply_identifier)
 
-    reply_handlers[reply_identifier]()
+    data = reply_handlers[reply_identifier]()
+
+    return reply_identifier, data
 
 
 serial_connection = serial.Serial(port='/dev/serial0', baudrate=115200,timeout=None, bytesize=serial.EIGHTBITS)
@@ -190,6 +242,8 @@ print("Connection Opened")
 
 if not serial_connection.isOpen():
     serial_connection.open()
+
+
 print("Set Serial Port")
 cmd_setSerialPort(1)
 
