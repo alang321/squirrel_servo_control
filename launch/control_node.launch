@@ -1,0 +1,11 @@
+<launch>
+
+  	<arg name="servo_list" default="[9,5]"/>
+
+  	<node name="squirrel_servo_node" pkg="squirrel_servo_control" type="squirrel_servo_node.py" output="screen">
+                <param name="servo_list" value="$(arg servo_list)"/>
+                <param name="serial_port" value="/dev/serial0"/>
+	</node>
+    
+</launch>
+

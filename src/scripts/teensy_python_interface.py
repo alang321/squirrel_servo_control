@@ -20,6 +20,23 @@ struct_str_cmd_set_mode = '<bBB'
 struct_str_cmd_trigger_action = '<b'
 struct_str_cmd_set_motor_pwm = '<bBH'
 
+cmd_structs = {cmd_identifier['set_serial_port']: struct_str_cmd_set_serial_port,
+                cmd_identifier['enable_servo']: struct_str_cmd_enable_driver,
+                cmd_identifier['set_speed']: struct_str_cmd_set_speed,
+                cmd_identifier['set_position']: struct_str_cmd_set_pos,
+                cmd_identifier['get_speed']: struct_str_cmd_get_spd,
+                cmd_identifier['get_position']: struct_str_cmd_get_pos,
+                cmd_identifier['get_volt']: struct_str_cmd_get_volt,
+                cmd_identifier['get_temp']: struct_str_cmd_get_temp,
+                cmd_identifier['get_is_moving']: struct_str_cmd_get_is_moving,
+                cmd_identifier['get_all']: struct_str_cmd_get_all,
+                cmd_identifier['set_mode']: struct_str_cmd_set_mode,
+                cmd_identifier['set_position_async']: struct_str_cmd_set_pos,
+                cmd_identifier['set_speed_async']: struct_str_cmd_set_speed,
+                cmd_identifier['trigger_action']: struct_str_cmd_trigger_action,
+                cmd_identifier['set_speed_motor']: struct_str_cmd_set_motor_pwm
+                }
+
 
 #receiving messages
 replystruct_get_position_format = '<Bh'
@@ -28,6 +45,14 @@ replystruct_get_volt_format = '<Bb'
 replystruct_get_temp_format = '<Bb'
 replystruct_get_is_moving_format = '<B?'
 replystruct_get_all_format = '<Bhhbb?'
+
+replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_format,
+                reply_identifier['reply_get_position_id']: replystruct_get_position_format,
+                reply_identifier['reply_get_volt_id']: replystruct_get_volt_format,
+                reply_identifier['reply_get_temp_id']: replystruct_get_temp_format,
+                reply_identifier['reply_get_is_moving_id']: replystruct_get_is_moving_format,
+                reply_identifier['reply_get_all_id']: replystruct_get_all_format
+                }
 
 cmd_identifier = {
     'set_serial_port': 0,
@@ -225,11 +250,15 @@ reply_handlers = {
 def receive_Message():
     #read first byte and convert to int
     reply_identifier = int.from_bytes(serial_connection.read(1), byteorder='little')
-    print("Reply:", reply_identifier)
+    if verbose:
+        print("Reply:", reply_identifier)
 
     data = reply_handlers[reply_identifier]()
 
     return reply_identifier, data
+
+def is_message_available():
+    return serial_connection.in_waiting > 0
 
 def start_serial(port='/dev/serial0', baudrate=230400):
     global serial_connection
