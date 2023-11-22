@@ -4,17 +4,17 @@ from squirrel_servo_control.msg import servo_feedback
 from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
-import scripts.teensy_python_interface
+import scripts.teensy_python_interface as teensy
 
 def teensy_comm():
     rospy.init_node('squirrel_servo_node', anonymous=True)
     pub = rospy.Publisher('servo_feedback', servo_feedback, queue_size=10)
 
     #init serial port
-    print(teensy_python_interface.verbose)
-    teensy_python_interface.start_serial()
+    teensy.verbose = True
+    teensy.start_serial()
 
-    teensy_python_interface.cmd_setSerialPort(1)
+    teensy.cmd_setSerialPort(1)
 
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
@@ -43,15 +43,15 @@ def teensy_comm():
     #    rate.sleep()
 
 def callback_speed(cmd_speed):
-    teensy_python_interface.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
+    teensy.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
     rospy.loginfo("Set speed command:", cmd_speed.speed, "for servo:", cmd_speed.servo_id)
 
 def callback_position(cmd_pos):
-    teensy_python_interface.cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
+    teensy.cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
     rospy.loginfo("Set position command:", cmd_pos.position, "for servo:", cmd_pos.servo_id)
 
 def callback_motor_speed(cmd_speed):
-    teensy_python_interface.cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
+    teensy.cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
     rospy.loginfo("Set motor speed command:", cmd_speed.pwm, "for motor:", cmd_speed.motor_id)
  
 
