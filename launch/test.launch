@@ -1,6 +1,9 @@
 <launch>
 
   	<node name="squirrel_servo_node" pkg="squirrel_servo_control" type="squirrel_servo_node.py" output="screen"/>
+
+	
+  	<node name="servo_test_node" pkg="squirrel_servo_control" type="servo_test_node.py" output="screen"/>
     
 </launch>
 

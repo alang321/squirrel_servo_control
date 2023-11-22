@@ -3,23 +3,33 @@ from squirrel_servo_control.msg import servo_feedback
 from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
-import scripts.teensy_python_interface as teensy
 
-def teensy_comm():
-    rospy.init_node('squirrel_servo_node', anonymous=True)
-    pub = rospy.Publisher('servo_feedback', servo_feedback, queue_size=10)
+def tester():
+    rospy.init_node('servo_test_node', anonymous=True)
+    pub_speed = rospy.Publisher('servo_set_speed', servo_feedback, queue_size=10)
+    pub_pos = rospy.Publisher('servo_set_position', servo_feedback, queue_size=10)
 
-    #init serial port
-    teensy.verbose = True
-    teensy.start_serial()
+    msg = servo_speed()
+    msg.servo_id = 9
+    msg.speed = 5000
 
-    teensy.cmd_setSerialPort(1)
+    pub_speed.publish(msg)
+    
+    rate = rospy.Rate(1) # 10hz
 
-    rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
-    rospy.Subscriber("servo_set_position", servo_position, callback_position)
-    rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
+    current_pos = 0
+    while not rospy.is_shutdown():
+        if current_pos == 0:
+            current_pos = 5000
+        else:
+            current_pos = 0
 
-    rospy.spin()
+        msg = servo_position()
+        msg.servo_id = 9
+        msg.position = current_pos
+        pub_pos.publish(msg)
+        
+        rate.sleep()
 
     #rate = rospy.Rate(100) # 10hz
 
