@@ -34,7 +34,7 @@ def tester():
         current_speed_motor += 30
 
         msg = motor_speed()
-        msg.motor_id = 1
+        msg.motor_id = 0
         msg.pwm = current_speed_motor
         pub_motor_speed.publish(msg)
 
