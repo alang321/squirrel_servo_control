@@ -3,6 +3,7 @@ from squirrel_servo_control.msg import servo_feedback
 from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
+import time
 
 def tester():
     rospy.init_node('servo_test_node', anonymous=True)
@@ -10,6 +11,8 @@ def tester():
     pub_pos = rospy.Publisher('servo_set_position', servo_position, queue_size=10)
     pub_motor_speed = rospy.Publisher('motor_set_speed', motor_speed, queue_size=10)
 
+    time.sleep(1)
+    
     msg = servo_speed()
     msg.servo_id = 9
     msg.speed = 7000
