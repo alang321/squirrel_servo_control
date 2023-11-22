@@ -22,6 +22,7 @@ def teensy_comm():
 
     rospy.loginfo("Parameter Serial port:" + serial_port)
     rospy.loginfo("Parameter Servo list:" + str(servo_list))
+    rospy.loginfo("Parameter Servo list type:" + str(type(servo_list.type)))
 
     #init serial port
     teensy.verbose = False

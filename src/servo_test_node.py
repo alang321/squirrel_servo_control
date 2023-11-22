@@ -67,26 +67,6 @@ def tester():
 
         rate.sleep()
 
-    #rate = rospy.Rate(100) # 10hz
-
-    #while not rospy.is_shutdown():
-        #eqch loop request feedback from teensy
-
-        #then wait for response
-
-        #then publish response
-
-    #    msg = servo_feedback()
-    #    msg.time = rospy.get_time()
-    #    msg.position = 0
-    #    msg.speed = 0
-    #    msg.volt = 0
-    #    msg.temp = 0
-    #    pub.publish(servo_feedback())
-
-        #do some more clever stuff here
-    #    rate.sleep()
-
  
 
 
