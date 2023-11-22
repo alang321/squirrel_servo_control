@@ -41,7 +41,7 @@ def tester():
             msg.pwm = current_pos_motor1
             pub_motor_speed.publish(msg)
 
-        if id == 1
+        if id == 1:
             current_pos_servo += servo_step
             if current_pos_servo >= 3000:
                 current_pos_servo = 0
