@@ -12,16 +12,16 @@ def tester():
     pub_motor_speed = rospy.Publisher('motor_set_speed', motor_speed, queue_size=10)
 
     time.sleep(1)
-    
+
     msg = servo_speed()
     msg.servo_id = 9
     msg.speed = 7000
 
-    rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
+    #rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
 
     pub_speed.publish(msg)
     
-    rate = rospy.Rate(5) # 10hz
+    rate = rospy.Rate(10) # 10hz
 
     current_pos = 0
     current_pos_motor = 1300
