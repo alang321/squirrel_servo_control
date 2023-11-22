@@ -57,6 +57,9 @@ def callback_timer(event):
 
     message_in = teensy.receive_Message()
 
+    if message_in == None:
+        return
+
     reply_identifier = message_in[0]
     data = message_in[1]
 
