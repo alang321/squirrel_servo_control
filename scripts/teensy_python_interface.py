@@ -7,6 +7,7 @@ from time import sleep
 from math import floor
 
 verbose = True
+serial_connection = None
 
 #START_BYTE = b'\x9A'
 #sending messages
@@ -63,6 +64,7 @@ reply_identifier = {
 
 
 def writeToSerial(payload_out):
+    global serial_connection
     #serial_connection.write(START_BYTE)
     serial_connection.write(payload_out)
     serial_connection.flush()
@@ -235,42 +237,15 @@ def receive_Message():
 
     return reply_identifier, data
 
+def start_serial(port='/dev/serial0', baudrate=115200):
+    global serial_connection
+    ser = serial.Serial(port=port, baudrate=baudrate,timeout=None, bytesize=serial.EIGHTBITS)
 
-serial_connection = serial.Serial(port='/dev/serial0', baudrate=115200,timeout=None, bytesize=serial.EIGHTBITS)
-print("Connection Opened")
+    if not ser.isOpen():
+        ser.open()
 
-
-if not serial_connection.isOpen():
-    serial_connection.open()
-
-
-print("Set Serial Port")
-cmd_setSerialPort(1)
-
-sleep(2)
-print("Set velocity")
-cmd_setSpeed(9, 5000)
-
-pos = 1
-
-while True:
-    cmd_getAll(9)
-
-    sleep(1)
-    print("Set pos")
-    cmd_setPosition(9, 1000)
-
-    sleep(1)
-
-    print("Set pos")
-    cmd_setPosition(9, 4000)
-
-    #check if there is a message in the buffer
-    if serial_connection.in_waiting > 0:
-        receive_Message()
-
-    sleep(1)
-print("finished")
+    print("Connection Opened")
+    serial_connection = ser
 
         
 
