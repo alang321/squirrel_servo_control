@@ -92,7 +92,7 @@ replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_fo
 
 def writeToSerial(payload_out):
     global serial_connection
-    serial_connection.write(b'\xFF')
+    serial_connection.write(b'\xBF')
     serial_connection.write(b'\xFF')
     serial_connection.write(payload_out)
     serial_connection.flush()
@@ -191,7 +191,7 @@ def receive_Message():
     #read all bytes until the start marker and discard, start marker is 2 bytes 0xFF 0xFF
     counter = 0
     while True:
-        if serial_connection.read(1) == b'\xFF':
+        if serial_connection.read(1) == b'\xBF':
             if serial_connection.read(1) == b'\xFF':
                 break
 
