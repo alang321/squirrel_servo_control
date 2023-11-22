@@ -52,7 +52,6 @@ def tester():
             pub_pos.publish(msg)
 
         if id == 2:
-            
             msg = motor_speed()
             msg.motor_id = 2
 

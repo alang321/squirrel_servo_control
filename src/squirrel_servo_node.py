@@ -19,6 +19,8 @@ def teensy_comm():
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
+    rospy.Timer(rospy.Duration(0.2), callback_timer)
+
     rospy.spin()
 
     #rate = rospy.Rate(100) # 10hz
@@ -40,6 +42,9 @@ def teensy_comm():
 
         #do some more clever stuff here
     #    rate.sleep()
+
+def callback_timer(event):
+    rospy.loginfo("Timer Callback")
 
 def callback_speed(cmd_speed):
     teensy.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
