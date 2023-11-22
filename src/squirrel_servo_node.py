@@ -5,6 +5,7 @@ from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
 import scripts.teensy_python_interface as teensy
 import time
+import json
 
 servo_list = []
 current_servo_feedback_idx = 0
@@ -18,7 +19,7 @@ def teensy_comm():
 
     #get parameters from launch file
     serial_port = rospy.get_param('~serial_port', '/dev/serial0')
-    servo_list = rospy.get_param('~servo_list', [])
+    servo_list = json.loads(rospy.get_param('~servo_list', []))
 
     rospy.loginfo("Parameter Serial port:" + serial_port)
     rospy.loginfo("Parameter Servo list:" + str(servo_list))
