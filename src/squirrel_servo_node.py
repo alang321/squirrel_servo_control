@@ -30,8 +30,6 @@ def teensy_comm():
     teensy.verbose = False
     teensy.start_serial(serial_port)
 
-    teensy.cmd_setSerialPort(1)
-
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
