@@ -26,9 +26,26 @@ def tester():
     servo_step = 15
     motor_step = 10
     current_pos_servo = 0
-    current_pos_motor1 = 1300
-    current_pos_motor2 = 1300
+    current_speed_motor = 900
     id = 0
+
+    while not rospy.is_shutdown():
+        #run the servo from 900 to 2100 in 100 steps with a timeout of 2 second
+        current_speed_motor += 100
+
+        msg = motor_speed()
+        msg.motor_id = 1
+        msg.pwm = current_speed_motor
+        pub_motor_speed.publish(msg)
+
+        rospy.loginfo("Motor speed:" + str(current_speed_motor))
+
+        if current_speed_motor >= 2100:
+            current_speed_motor = 900
+        time.sleep(2)
+
+        
+
     while not rospy.is_shutdown():
         if id == 0:
             msg = motor_speed()
