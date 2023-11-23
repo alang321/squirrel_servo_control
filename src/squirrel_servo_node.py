@@ -3,6 +3,7 @@ from squirrel_servo_control.msg import servo_feedback
 from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
+from squirrel_servo_control.msg import servo_enable_torque
 import scripts.teensy_python_interface as teensy
 import time
 import json
@@ -33,13 +34,21 @@ def teensy_comm():
     teensy.verbose = False
     teensy.start_serial(serial_port, baudrate=576000)
 
+    #disable torque for all servos in the list
+    for servo_id in servo_list:
+        with lock:
+            teensy.cmd_enableServo(servo_id, False)
+
     pub_feedback = rospy.Publisher('servo_feedback', servo_feedback, queue_size=1)
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
+    rospy.Subscriber("servo_enable_torque", servo_enable_torque, callback_enable_torque)
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
-    duration = 1/6/len(servo_list)
+    feedback_frequency = 6 # HZ
+    duration = 1/feedback_frequency/len(servo_list)
     rospy.Timer(rospy.Duration(duration), callback_timer)
+
 
     rospy.spin()
 
@@ -96,6 +105,11 @@ def callback_speed(cmd_speed):
     with lock:
         teensy.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
         #rospy.loginfo(("Set speed command:" + str(cmd_speed.speed) + "for servo:" +  str(cmd_speed.servo_id)))
+
+def callback_enable_torque(cmd_torque):
+    with lock:
+        teensy.cmd_enableServo(cmd_torque.servo_id, cmd_torque.enable)
+        #rospy.loginfo(("Set position command:" +  str(cmd_pos.position) + "for servo:" + str(cmd_pos.servo_id)))
 
 def callback_position(cmd_pos):
     with lock:
