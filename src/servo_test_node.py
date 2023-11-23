@@ -26,7 +26,7 @@ def tester():
     
     rate = rospy.Rate(20) # 10hz
 
-    servo_step = 10
+    servo_step = 100
     motor_step = 10
     current_pos_servo = 100
     current_pos_motor1 = 1100
@@ -44,7 +44,7 @@ def tester():
         msg.position = current_pos_servo
         pub_pos.publish(msg)
 
-        time.sleep(1)
+        rate.sleep()
 
  
 
