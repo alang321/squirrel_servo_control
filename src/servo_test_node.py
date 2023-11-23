@@ -29,7 +29,7 @@ def tester():
 
     for i in range(1, 9):
         msg = servo_calibrate_zero()
-        msg.servo_id = 9
+        msg.servo_id = i
 
         pub_zero.publish(msg)
 
