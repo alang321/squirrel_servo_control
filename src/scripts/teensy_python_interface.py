@@ -93,6 +93,10 @@ replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_fo
 
 def writeToSerial(payload_out):
     global serial_connection
+    #check if paylout_out is empty
+    if len(payload_out) == 0:
+        rospy.logwarn("Payload is empty")
+        return
     serial_connection.write(b'\xBF')
     serial_connection.write(b'\xFF')
     serial_connection.write(payload_out)
