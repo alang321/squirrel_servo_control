@@ -25,10 +25,12 @@ def teensy_comm():
     #get parameters from launch file
     serial_port = rospy.get_param('~serial_port', '/dev/serial0')
     servo_list = json.loads(rospy.get_param('~servo_list', []))
+    feedback_frequency = json.loads(rospy.get_param('~feedback_frequency', 6))
 
     rospy.loginfo("Parameter Serial port:" + serial_port)
     rospy.loginfo("Parameter Servo list:" + str(servo_list))
-    rospy.loginfo("Parameter Servo list type:" + str(type(servo_list)))
+    rospy.loginfo("Parameter Feedback frequency:" + str(feedback_frequency))
+
 
     #init serial port
     teensy.verbose = False
@@ -45,7 +47,6 @@ def teensy_comm():
     rospy.Subscriber("servo_enable_torque", servo_enable_torque, callback_enable_torque)
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
-    feedback_frequency = 6 # HZ
     duration = 1/feedback_frequency/len(servo_list)
     rospy.Timer(rospy.Duration(duration), callback_timer)
 
