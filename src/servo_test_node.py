@@ -3,6 +3,7 @@ from squirrel_servo_control.msg import servo_feedback
 from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
+import scripts.teensy_python_interface as teensy
 import time
 
 def tester():
@@ -17,13 +18,25 @@ def tester():
     msg.servo_id = 9
     msg.speed = 7000
 
-    cmd_enableServo(9, false)
+
+    
+    rospy.loginfo("enable torque")
+    teensy.cmd_enableServo(9, true)
+
+    
+    msg = servo_position()
+    msg.servo_id = 9
+    msg.position = 40
+    pub_pos.publish(msg)
+    
+    time.sleep(10)
+    teensy.cmd_enableServo(9, false)
 
     rospy.loginfo("disable torque")
 
-    time.sleep(15)
+    time.sleep(10)
     rospy.loginfo("enable torque")
-    cmd_enableServo(9, true)
+    teensy.cmd_enableServo(9, true)
 
     
     msg = servo_position()
