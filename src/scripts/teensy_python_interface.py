@@ -188,7 +188,6 @@ def receive_Message():
     #print buffer to ros in hex
     reply_format = replystructs[reply_identifier]
     buffer = serial_connection.read(struct.calcsize(reply_format) + 1)
-    rospy.loginfo(' '.join(hex(x) for x in buffer))
     data = struct.unpack(reply_format, buffer)
 
     return reply_identifier, data
