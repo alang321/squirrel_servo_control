@@ -35,7 +35,6 @@ def teensy_comm():
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
     duration = 1/6/len(servo_list)
-    duration = 5
     rospy.Timer(rospy.Duration(duration), callback_timer)
 
     callback_timer(None)
