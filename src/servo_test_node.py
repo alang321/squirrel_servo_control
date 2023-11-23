@@ -21,7 +21,7 @@ def tester():
 
     pub_speed.publish(msg)
     
-    rate = rospy.Rate(1) # 10hz
+    rate = rospy.Rate(5) # 10hz
 
     servo_step = 100
     motor_step = 10
@@ -30,8 +30,7 @@ def tester():
     current_pos_motor2 = 1100
     id = 0
 
-    return 
-    
+
     while not rospy.is_shutdown():
         current_pos_servo += servo_step
         if current_pos_servo >= 3000:
