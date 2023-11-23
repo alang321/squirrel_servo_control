@@ -25,7 +25,7 @@ def teensy_comm():
     #get parameters from launch file
     serial_port = rospy.get_param('~serial_port', '/dev/serial0')
     servo_list = json.loads(rospy.get_param('~servo_list', []))
-    feedback_frequency = json.loads(rospy.get_param('~feedback_frequency', 6))
+    feedback_frequency = float(rospy.get_param('~feedback_frequency', 6.0))
 
     rospy.loginfo("Parameter Serial port:" + serial_port)
     rospy.loginfo("Parameter Servo list:" + str(servo_list))
