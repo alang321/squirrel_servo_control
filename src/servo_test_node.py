@@ -21,7 +21,7 @@ def tester():
 
     
     rospy.loginfo("enable torque")
-    teensy.cmd_enableServo(9, true)
+    teensy.cmd_enableServo(9, True)
 
     
     msg = servo_position()
@@ -30,13 +30,13 @@ def tester():
     pub_pos.publish(msg)
     
     time.sleep(10)
-    teensy.cmd_enableServo(9, false)
+    teensy.cmd_enableServo(9, False)
 
     rospy.loginfo("disable torque")
 
     time.sleep(10)
     rospy.loginfo("enable torque")
-    teensy.cmd_enableServo(9, true)
+    teensy.cmd_enableServo(9, True)
 
     
     msg = servo_position()
