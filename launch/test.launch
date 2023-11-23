@@ -11,7 +11,6 @@
 				<param name="feedback_frequency" value="$(arg feedback_frequency)"/>
 	</node>
 
-	
   	<node name="servo_test_node" pkg="squirrel_servo_control" type="servo_test_node.py" output="screen"/>
 	
     
