@@ -16,7 +16,6 @@ def teensy_comm():
     global servo_list
     global pub_feedback
     rospy.init_node('squirrel_servo_node', anonymous=True)
-    pub_feedback = rospy.Publisher('servo_feedback', servo_feedback, queue_size=1)
 
     #get parameters from launch file
     serial_port = rospy.get_param('~serial_port', '/dev/serial0')
@@ -30,6 +29,7 @@ def teensy_comm():
     teensy.verbose = False
     teensy.start_serial(serial_port)
 
+    pub_feedback = rospy.Publisher('servo_feedback', servo_feedback, queue_size=1)
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
