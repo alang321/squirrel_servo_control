@@ -60,6 +60,7 @@ def callback_timer(event):
     message_in = teensy.receive_Message()
 
     if message_in == None:
+        rospy.logwarn("No feedback reply received")
         return
 
     reply_identifier = message_in[0]
