@@ -1,9 +1,9 @@
 <launch>
 
 	
-	<arg name="servo_list" default="[9]"/>
+	<arg name="servo_list" default="[1,2,3,4,5,6]"/>
 	<arg name="serial_port" default="/dev/serial0"/>
-	<arg name="feedback_frequency" default="5.0"/>
+	<arg name="feedback_frequency" default="10.0"/>
 
   	<node name="squirrel_servo_node" pkg="squirrel_servo_control" type="squirrel_servo_node.py" output="screen">
                 <param name="servo_list" value="$(arg servo_list)"/>

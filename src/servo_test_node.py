@@ -16,25 +16,17 @@ def tester():
 
     time.sleep(.5)
 
-    msg = servo_speed()
-    msg.servo_id = 9
-    msg.speed = 7000
+    #msg = servo_speed()
+    #msg.servo_id = 9
+    #msg.speed = 7000
 
-    pub_speed.publish(msg)
+    #pub_speed.publish(msg)
 
 
     #rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
 
-    time.sleep(10)
 
-    rospy.loginfo("enable torque")
-    msg = servo_enable_torque()
-    msg.servo_id = 9
-    msg.enable = True
-    pub_enable.publish(msg)
-
-    time.sleep(10)
-
+    return
     
     rate = rospy.Rate(20) # 10hz
 
