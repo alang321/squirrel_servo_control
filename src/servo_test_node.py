@@ -17,6 +17,21 @@ def tester():
     msg.servo_id = 9
     msg.speed = 7000
 
+    cmd_enableServo(9, false)
+
+    rospy.loginfo("disable torque")
+
+    time.sleep(15)
+    rospy.loginfo("enable torque")
+    cmd_enableServo(9, true)
+
+    
+    msg = servo_position()
+    msg.servo_id = 9
+    msg.position = 40
+    pub_pos.publish(msg)
+
+
     #rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
 
     pub_speed.publish(msg)
