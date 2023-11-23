@@ -37,28 +37,7 @@ def teensy_comm():
     duration = 1/6/len(servo_list)
     #rospy.Timer(rospy.Duration(duration), callback_timer)
 
-    
-    
-    rospy.loginfo("wheel mode")
-    teensy.cmd_setMode(9, 1)
-    
-    time.sleep(10)
-
-    rospy.loginfo("pos mode")
-
-    teensy.cmd_setMode(9, 0)
-    msg = servo_position()
-    msg.servo_id = 9
-    msg.position = 40
-    callback_position(msg)
-
-    time.sleep(10)
-
-    
-    msg = servo_position()
-    msg.servo_id = 9
-    msg.position = 40
-    callback_position(msg)
+    callback_timer(None)
 
     rospy.spin()
 
