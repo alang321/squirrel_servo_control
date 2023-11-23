@@ -31,7 +31,7 @@ def teensy_comm():
 
     #init serial port
     teensy.verbose = False
-    teensy.start_serial(serial_port, baudrate=57600)
+    teensy.start_serial(serial_port, baudrate=576000)
 
     pub_feedback = rospy.Publisher('servo_feedback', servo_feedback, queue_size=1)
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
