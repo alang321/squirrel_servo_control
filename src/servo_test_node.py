@@ -18,7 +18,7 @@ def tester():
     msg.servo_id = 9
     msg.speed = 7000
 
-
+    return
 
 
     #rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
