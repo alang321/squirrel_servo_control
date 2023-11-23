@@ -37,6 +37,8 @@ def teensy_comm():
     duration = 1/6/len(servo_list)
     #rospy.Timer(rospy.Duration(duration), callback_timer)
 
+    teensy.cmd_enableServo(9, False)
+
     callback_timer(None)
 
     rospy.spin()
