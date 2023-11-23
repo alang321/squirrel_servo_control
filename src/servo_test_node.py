@@ -27,15 +27,13 @@ def tester():
 
     #rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
 
-    while not rospy.is_shutdown():
+    for i in range(1, 9):
         msg = servo_calibrate_zero()
         msg.servo_id = 9
 
         pub_zero.publish(msg)
 
         rospy.loginfo(("Set zero command in tester for servo:" + str(msg.servo_id)))
-
-        time.sleep(5)
 
     return
     
