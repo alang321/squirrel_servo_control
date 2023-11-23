@@ -25,7 +25,7 @@ def tester():
 
     servo_step = 100
     motor_step = 10
-    current_pos_servo = 0
+    current_pos_servo = 100
     current_pos_motor1 = 1100
     current_pos_motor2 = 1100
     id = 0
@@ -34,7 +34,7 @@ def tester():
     while not rospy.is_shutdown():
         current_pos_servo += servo_step
         if current_pos_servo >= 3000:
-            current_pos_servo = 0
+            current_pos_servo = 100
 
         msg = servo_position()
         msg.servo_id = 9
