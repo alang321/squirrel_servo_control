@@ -4,15 +4,17 @@ from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
 from squirrel_servo_control.msg import servo_enable_torque
+from squirrel_servo_control.msg import servo_calibrate_zero
 import scripts.teensy_python_interface as teensy
 import time
 
 def tester():
     rospy.init_node('servo_test_node', anonymous=True)
-    pub_speed = rospy.Publisher('servo_set_speed', servo_speed, queue_size=1)
-    pub_pos = rospy.Publisher('servo_set_position', servo_position, queue_size=1)
-    pub_motor_speed = rospy.Publisher('motor_set_speed', motor_speed, queue_size=1)
-    pub_enable = rospy.Publisher('servo_enable_torque', servo_enable_torque, queue_size=1)
+    pub_speed = rospy.Publisher('servo_set_speed', servo_speed, queue_size=10)
+    pub_pos = rospy.Publisher('servo_set_position', servo_position, queue_size=10)
+    pub_motor_speed = rospy.Publisher('motor_set_speed', motor_speed, queue_size=10)
+    pub_enable = rospy.Publisher('servo_enable_torque', servo_enable_torque, queue_size=10)
+    pub_zero = rospy.Publisher('servo_set_zero_position', servo_calibrate_zero, queue_size=10)
 
     time.sleep(.5)
 
@@ -25,6 +27,15 @@ def tester():
 
     #rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
 
+    while not rospy.is_shutdown():
+        msg = servo_calibrate_zero()
+        msg.servo_id = 9
+
+        pub_zero.publish(msg)
+
+        rospy.loginfo(("Set zero command in tester for servo:" + str(msg.servo_id)))
+
+        time.sleep(5)
 
     return
     

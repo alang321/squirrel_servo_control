@@ -10,7 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_python_setup()
 
 
-add_message_files(DIRECTORY msg FILES motor_speed.msg servo_feedback.msg servo_position.msg servo_speed.msg servo_enable_torque.msg)
+add_message_files(DIRECTORY msg FILES motor_speed.msg servo_feedback.msg servo_position.msg servo_speed.msg servo_enable_torque.msg servo_calibrate_zero.msg)
 
 
 generate_messages(DEPENDENCIES std_msgs)

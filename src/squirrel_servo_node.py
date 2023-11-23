@@ -4,6 +4,7 @@ from squirrel_servo_control.msg import servo_speed
 from squirrel_servo_control.msg import servo_position
 from squirrel_servo_control.msg import motor_speed
 from squirrel_servo_control.msg import servo_enable_torque
+from squirrel_servo_control.msg import servo_calibrate_zero
 import scripts.teensy_python_interface as teensy
 import time
 import json
@@ -25,7 +26,7 @@ def teensy_comm():
     #get parameters from launch file
     serial_port = rospy.get_param('~serial_port', '/dev/serial0')
     servo_list = json.loads(rospy.get_param('~servo_list', []))
-    feedback_frequency = float(rospy.get_param('~feedback_frequency', 6.0))
+    feedback_frequency = float(rospy.get_param('~feedback_frequency', 3.0))
 
     rospy.loginfo("Parameter Serial port:" + serial_port)
     rospy.loginfo("Parameter Servo list:" + str(servo_list))
@@ -41,11 +42,12 @@ def teensy_comm():
         with lock:
             teensy.cmd_enableServo(servo_id, False)
 
-    pub_feedback = rospy.Publisher('servo_feedback', servo_feedback, queue_size=1)
+    pub_feedback = rospy.Publisher('servo_feedback', servo_feedback, queue_size=5)
     rospy.Subscriber("servo_set_speed", servo_speed, callback_speed)
     rospy.Subscriber("servo_set_position", servo_position, callback_position)
     rospy.Subscriber("servo_enable_torque", servo_enable_torque, callback_enable_torque)
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
+    rospy.Subscriber("servo_set_zero_position", servo_calibrate_zero, callback_set_zero)
 
     duration = 1/feedback_frequency/len(servo_list)
     rospy.Timer(rospy.Duration(duration), callback_timer)
@@ -101,6 +103,10 @@ def callback_timer(event):
     #else:
         #rospy.loginfo("Unexpected reply identifier:" + str(reply_identifier))
 
+def callback_set_zero(cmd_zero):
+    with lock:
+        teensy.cmd_setZeroPosition(cmd_zero.servo_id)
+        #rospy.loginfo(("Set zero position command for servo:" + str(cmd_zero.servo_id)))
 
 def callback_speed(cmd_speed):
     with lock:

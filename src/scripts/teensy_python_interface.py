@@ -22,7 +22,8 @@ cmd_identifier = {
     'set_position_async': 12,
     'set_speed_async': 13,
     'trigger_action': 14,
-    'set_speed_motor': 15
+    'set_speed_motor': 15,
+    "set_zero_position": 16
 }
 
 reply_identifier = {
@@ -51,6 +52,7 @@ struct_str_cmd_get_all = '<bB'
 struct_str_cmd_set_mode = '<bBB'
 struct_str_cmd_trigger_action = '<b'
 struct_str_cmd_set_motor_pwm = '<bBH'
+struct_str_cmd_set_zero_position = '<bB'
 
 cmd_structs = {cmd_identifier['set_serial_port']: struct_str_cmd_set_serial_port,
                 cmd_identifier['enable_servo']: struct_str_cmd_enable_driver,
@@ -67,7 +69,8 @@ cmd_structs = {cmd_identifier['set_serial_port']: struct_str_cmd_set_serial_port
                 cmd_identifier['set_position_async']: struct_str_cmd_set_pos,
                 cmd_identifier['set_speed_async']: struct_str_cmd_set_speed,
                 cmd_identifier['trigger_action']: struct_str_cmd_trigger_action,
-                cmd_identifier['set_speed_motor']: struct_str_cmd_set_motor_pwm
+                cmd_identifier['set_speed_motor']: struct_str_cmd_set_motor_pwm,
+                cmd_identifier['set_zero_position']: struct_str_cmd_set_zero_position
                 }
 
 
@@ -136,6 +139,10 @@ def cmd_setSpeedAsync(servo_id, speed):
 
 def cmd_setSpeedMotor(motor_id, pwm):
     struct_var = struct.pack(struct_str_cmd_set_motor_pwm, cmd_identifier['set_speed_motor'], motor_id, pwm)
+    writeToSerial(struct_var)
+
+def cmd_setZeroPosition(servo_id):
+    struct_var = struct.pack(struct_str_cmd_set_zero_position, cmd_identifier['set_zero_position'], servo_id)
     writeToSerial(struct_var)
 
 def cmd_triggerAction():
