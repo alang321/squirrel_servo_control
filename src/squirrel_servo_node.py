@@ -35,18 +35,7 @@ def teensy_comm():
     rospy.Subscriber("motor_set_speed", motor_speed, callback_motor_speed)
 
     duration = 1/6/len(servo_list)
-    duration = 0.5
     rospy.Timer(rospy.Duration(duration), callback_timer)
-
-    teensy.cmd_enableServo(9, False)
-
-    time.sleep(10)
-
-    rospy.loginfo("Starting servo torque")
-
-    teensy.cmd_enableServo(9, True)
-    
-
 
     rospy.spin()
 
