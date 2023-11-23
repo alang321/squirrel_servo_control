@@ -77,7 +77,7 @@ replystruct_get_load_format = '<Bh'
 replystruct_get_volt_format = '<Bb'
 replystruct_get_temp_format = '<Bb'
 replystruct_get_is_moving_format = '<B?'
-replystruct_get_all_format = '<Bhhhbb?'
+replystruct_get_all_format = '<Bhhhbb'
 
 replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_format,
                 reply_identifier['reply_get_position_id']: replystruct_get_position_format,
@@ -164,28 +164,6 @@ def cmd_getIsMoving(servo_id):
 def cmd_getAll(servo_id):
     struct_var = struct.pack(struct_str_cmd_get_all, cmd_identifier['get_all'], servo_id)
     writeToSerial(struct_var)
-
-
-def process_all_reply():
-    buffer = serial_connection.read(struct.calcsize(replystruct_get_all_format) + 1)
-    unpacked_reply = struct.unpack(replystruct_get_all_format, buffer[:-1])
-    servo_id = unpacked_reply[0]
-    position = unpacked_reply[1]
-    speed = unpacked_reply[2]
-    volt = unpacked_reply[3]
-    temp = unpacked_reply[4]
-    is_moving = unpacked_reply[5]
-
-    if verbose:
-        print("all reply")
-        print("servo_id: ", servo_id)
-        print("position: ", position)
-        print("speed: ", speed)
-        print("volt: ", volt)
-        print("temp: ", temp)
-        print("is_moving: ", is_moving)
-    
-    return servo_id, position, speed, volt, temp, is_moving
 
 def receive_Message():
     #read all bytes until the start marker and discard, start marker is 2 bytes 0xFF 0xFF
