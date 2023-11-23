@@ -1,5 +1,6 @@
 import serial
 import struct
+import rospy
 
 verbose = True
 serial_connection = None
@@ -184,8 +185,10 @@ def receive_Message():
     if verbose:
         print("Reply:", reply_identifier)
 
+    #print buffer to ros in hex
     reply_format = replystructs[reply_identifier]
     buffer = serial_connection.read(struct.calcsize(reply_format) + 1)
+    rospy.loginfo(' '.join(hex(x) for x in buffer))
     data = struct.unpack(reply_format, buffer[:-1])
 
     return reply_identifier, data
