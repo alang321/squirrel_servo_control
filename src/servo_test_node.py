@@ -27,7 +27,7 @@ def tester():
 
     msg = servo_position()
     msg.servo_id = 9
-    msg.position = current_pos_servo
+    msg.position = 800
     pub_pos.publish(msg)
 
     time.sleep(10)
