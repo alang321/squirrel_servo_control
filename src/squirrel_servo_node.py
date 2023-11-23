@@ -46,7 +46,7 @@ def teensy_comm():
     msg = servo_position()
     msg.servo_id = 9
     msg.position = 40
-    pub_pos.publish(msg)
+    callback_position(msg)
     
     time.sleep(10)
     teensy.cmd_enableServo(9, False)
@@ -61,9 +61,7 @@ def teensy_comm():
     msg = servo_position()
     msg.servo_id = 9
     msg.position = 40
-    pub_pos.publish(msg)
-
-    callback_timer(None)
+    callback_position(msg)
 
     rospy.spin()
 
