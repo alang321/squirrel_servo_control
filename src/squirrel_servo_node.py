@@ -39,23 +39,20 @@ def teensy_comm():
 
     
     
-    rospy.loginfo("enable torque")
-    teensy.cmd_enableServo(9, True)
-
+    rospy.loginfo("wheel mode")
+    teensy.cmd_setMode(9, 1)
     
+    time.sleep(10)
+
+    rospy.loginfo("pos mode")
+
+    teensy.cmd_setMode(9, 0)
     msg = servo_position()
     msg.servo_id = 9
     msg.position = 40
     callback_position(msg)
-    
-    time.sleep(10)
-    teensy.cmd_enableServo(9, False)
-
-    rospy.loginfo("disable torque")
 
     time.sleep(10)
-    rospy.loginfo("enable torque")
-    teensy.cmd_enableServo(9, True)
 
     
     msg = servo_position()

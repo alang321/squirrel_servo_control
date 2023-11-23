@@ -18,12 +18,12 @@ def tester():
     msg.servo_id = 9
     msg.speed = 7000
 
+    pub_speed.publish(msg)
     return
 
 
     #rospy.loginfo(("Set speed command in tester:" +  str(msg.speed) + "for servo:" + str(msg.servo_id)))
 
-    pub_speed.publish(msg)
     
     rate = rospy.Rate(5) # 10hz
 
