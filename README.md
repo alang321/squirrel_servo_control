@@ -65,7 +65,7 @@ Then, to create a workspace and clone the required files run this:
 ```
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/alang321/Feetech-STS-Teensy-Driver
+git clone https://github.com/alang321/squirrel_servo_control
 cd ..
 ```
 
