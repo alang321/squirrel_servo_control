@@ -60,6 +60,10 @@ def callback_timer(event):
     global pub_feedback
     global current_servo_feedback_idx
     #rospy.loginfo("Feedback Callback")
+    
+    if len(servo_list) == 0:
+        return
+
     servo_id = servo_list[current_servo_feedback_idx]
     current_servo_feedback_idx += 1
     current_servo_feedback_idx %= len(servo_list)

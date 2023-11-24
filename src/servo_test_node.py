@@ -20,7 +20,7 @@ def tester():
 
     #msg = servo_speed()
     #msg.servo_id = 9
-    #msg.speed = 7000
+    #msg.speed = 2000
 
     #pub_speed.publish(msg)
 
