@@ -46,6 +46,9 @@ It subscribes to 5 topics from which it awaits commands to pass on to the teensy
 - "servo_set_zero_position" - servo_calibrate_zero.msg - Sets the zero position (position 2048) of the servos to the current position.
 - "motor_set_speed" - motor_speed.msg - Sets the PWM frequency of an optionally connected ESC or traditional servo with PWM control. The control value is the pulse width in microseconds. The motor_id field selects the PWM pin configured in the teensy driver. 0 is both PWm pins, 1 is PWM pin 1, 2 is PWN pin 2.
 
+It publishes the feedback it receives from the servos.
+
+- "servo_feedback" - servo_feedback.msg - Publishes current position, speed, load in 0-1000, the supply voltage and the temperature.
 
 ### Node 2: servo_test_node
 This node is just included in order for people to quickly check that everything ir working propely for their setup. some test commands can be sent easily. The currently included code is just some usage examples.
