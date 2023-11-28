@@ -1,6 +1,12 @@
 import serial
 import struct
 import rospy
+import threading
+import packet_structs
+
+# Create a lock
+lock_write = threading.Lock()
+lock_read = threading.Lock()
 
 verbose = True
 serial_connection = None
@@ -96,14 +102,15 @@ replystructs = {reply_identifier['reply_get_speed_id']: replystruct_get_speed_fo
 
 def writeToSerial(payload_out):
     global serial_connection
-    #check if paylout_out is empty
-    if len(payload_out) == 0:
-        rospy.logwarn("Payload is empty")
-        return
-    serial_connection.write(b'\xBF')
-    serial_connection.write(b'\xFF')
-    serial_connection.write(payload_out)
-    serial_connection.flush()
+    with lock_write:
+        #check if paylout_out is empty
+        if len(payload_out) == 0:
+            rospy.logwarn("Payload is empty")
+            return
+        serial_connection.write(b'\xBF')
+        serial_connection.write(b'\xFF')
+        serial_connection.write(payload_out)
+        serial_connection.flush()
 
 def cmd_setSerialPort(port_id):
     struct_var = struct.pack(struct_str_cmd_set_serial_port, cmd_identifier['set_serial_port'], port_id)
@@ -115,10 +122,6 @@ def cmd_enableServo(servo_id, enable):
 
 def cmd_setSpeed(servo_id, speed):
     struct_var = struct.pack(struct_str_cmd_set_speed, cmd_identifier['set_speed'], servo_id, speed)
-    #print the buffer in hex
-    if verbose:
-        print(struct_var)
-        print(' '.join(hex(x) for x in struct_var))
     writeToSerial(struct_var)
 
 def cmd_setPosition(servo_id, position):
@@ -182,46 +185,50 @@ def receive_Message():
     counter_bytes_read = 0
     counter_timeouts = 0
     last_byte = None
-    while True:
-        byte1 = serial_connection.read(1)
-        
-        if byte1: #if byte1 is not empty, i.e. it didnt timeout
-            if last_byte == b'\xBF' and byte1 == b'\xFF': # check if the last 2 bytes are the start marker
-                break
 
-            counter_bytes_read += 1
-            last_byte = byte1
-        else:
-            counter_timeouts += 1
+    with lock_read:
+        while True:
+            #todo switch this to read_until, does the same thing but better
+            byte1 = serial_connection.read(1)
+            
+            if byte1: #if byte1 is not empty, i.e. it didnt timeout
+                if last_byte == b'\xBF' and byte1 == b'\xFF': # check if the last 2 bytes are the start marker
+                    break
 
-        if counter_bytes_read > 40:
-            print("Warning, no start marker found when reading serial buffer (40 bytes read), aborting read")
-            serial_connection.flush()
-            return None
+                counter_bytes_read += 1
+                last_byte = byte1
+            else:
+                ros.loginfo("Warning, waited 10ms without receving a byte, aborting read")
+                serial_connection.flush()
+                return None
 
-        if counter_timeouts > 2: # 2 timeouts is 30ms
-            print("Warning, too many timeouts, waited 30ms for start marker, aborting read")
-            serial_connection.flush()
-            return None
-
-
+            if counter_bytes_read > 40:
+                ros.loginfo("Warning, no start marker found when reading serial buffer (40 bytes read), aborting read")
+                serial_connection.flush()
+                return None
+                
     reply_identifier = int.from_bytes(serial_connection.read(1), byteorder='little')
-    if verbose:
-        print("Reply:", reply_identifier)
+    
+    if not packet_structs.ReplyIdentifiers.isValidReplyId(reply_identifier):
+        ros.loginfo("Warning, reply identifier not recognized, aborting read")
+        serial_connection.flush()
+        return None
 
-    #print buffer to ros in hex
-    reply_format = replystructs[reply_identifier]
-    buffer = serial_connection.read(struct.calcsize(reply_format) + 1)
-    data = struct.unpack(reply_format, buffer)
+    reply_struct = packet_structs.reply_classes[reply_identifier]
+    buffer = serial_connection.read(reply_struct.getBufferLength())
+    reply = reply_struct(buffer)
 
-    return reply_identifier, data
+    if not reply.valid:
+        ros.loginfo(("Warning, reply checksum verification failed, reply identifier:" + str(reply_identifier)))
+
+    return reply
 
 def is_message_available():
     return serial_connection.in_waiting > 0
 
 def start_serial(port='/dev/serial0', baudrate=230400):
     global serial_connection
-    ser = serial.Serial(port=port, baudrate=baudrate,timeout=0.015, bytesize=serial.EIGHTBITS)
+    ser = serial.Serial(port=port, baudrate=baudrate,timeout=0.01, bytesize=serial.EIGHTBITS)
 
     if not ser.isOpen():
         ser.open()

@@ -9,10 +9,8 @@ import scripts.teensy_python_interface as teensy
 import time
 import json
 import std_msgs.msg
-import threading
+import packet_structs
 
-# Create a lock
-lock = threading.Lock()
 
 servo_list = []
 current_servo_feedback_idx = 0
@@ -70,67 +68,48 @@ def callback_timer(event):
 
     #rospy.loginfo("Servo ID:" + str(servo_id))
 
-    with lock:
-        teensy.cmd_getAll(servo_id)
+    teensy.cmd_getAll(servo_id)
 
-    message_in = teensy.receive_Message()
+    reply = teensy.receive_Message()
 
-    if message_in == None:
-        rospy.logwarn("No feedback reply received")
-        return
+    if reply.identifier != packet_structs.ReplyGetAll.identifier:
+        rospy.logwarn("Unexpected reply identifier:" + str(reply.identifier))
 
-    reply_identifier = message_in[0]
-    data = message_in[1]
-
-    if reply_identifier == teensy.reply_identifier['reply_get_all_id']:
-        servo_id = data[0]
-        position = data[1]
-        speed = data[2]
-        load = data[3]
-        supply_volt = data[4]
-        temp = data[5]
-
+    if reply.valid:
         msg = servo_feedback()
 
         h = std_msgs.msg.Header()
         h.stamp = rospy.Time.now()
 
         msg.header = h
-        msg.servo_id = servo_id
-        msg.position = position
-        msg.speed = speed
-        msg.load = load
-        msg.supply_volt = supply_volt
-        msg.temp = temp
+        msg.servo_id = reply.servo_id
+        msg.position = reply.position
+        msg.speed = reply.speed
+        msg.load = reply.load
+        msg.supply_volt = reply.supply_volt
+        msg.temp = reply.temp
         pub_feedback.publish(msg)
         #rospy.loginfo("Published feedback for servo:" + str(servo_id))
-    #else:
-        #rospy.loginfo("Unexpected reply identifier:" + str(reply_identifier))
 
 def callback_set_zero(cmd_zero):
-    with lock:
-        teensy.cmd_setZeroPosition(cmd_zero.servo_id)
-        #rospy.loginfo(("Set zero position command for servo:" + str(cmd_zero.servo_id)))
+    teensy.cmd_setZeroPosition(cmd_zero.servo_id)
+    #rospy.loginfo(("Set zero position command for servo:" + str(cmd_zero.servo_id)))
 
 def callback_speed(cmd_speed):
-    with lock:
-        teensy.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
-        #rospy.loginfo(("Set speed command:" + str(cmd_speed.speed) + "for servo:" +  str(cmd_speed.servo_id)))
+    teensy.cmd_setSpeed(cmd_speed.servo_id, cmd_speed.speed)
+    #rospy.loginfo(("Set speed command:" + str(cmd_speed.speed) + "for servo:" +  str(cmd_speed.servo_id)))
 
 def callback_enable_torque(cmd_torque):
-    with lock:
-        teensy.cmd_enableServo(cmd_torque.servo_id, cmd_torque.enable)
-        #rospy.loginfo(("Set position command:" +  str(cmd_pos.position) + "for servo:" + str(cmd_pos.servo_id)))
+    teensy.cmd_enableServo(cmd_torque.servo_id, cmd_torque.enable)
+    #rospy.loginfo(("Set position command:" +  str(cmd_pos.position) + "for servo:" + str(cmd_pos.servo_id)))
 
 def callback_position(cmd_pos):
-    with lock:
-        teensy.cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
-        #rospy.loginfo(("Set position command:" +  str(cmd_pos.position) + "for servo:" + str(cmd_pos.servo_id)))
+    teensy.cmd_setPosition(cmd_pos.servo_id, cmd_pos.position)
+    #rospy.loginfo(("Set position command:" +  str(cmd_pos.position) + "for servo:" + str(cmd_pos.servo_id)))
 
 def callback_motor_speed(cmd_speed):
-    with lock:
-        teensy.cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
-        #rospy.loginfo(("Set motor speed command:" + str(cmd_speed.pwm) + "for motor:" +  str(cmd_speed.motor_id)))
+    teensy.cmd_setSpeedMotor(cmd_speed.motor_id, cmd_speed.pwm)
+    #rospy.loginfo(("Set motor speed command:" + str(cmd_speed.pwm) + "for motor:" +  str(cmd_speed.motor_id)))
  
 
 
