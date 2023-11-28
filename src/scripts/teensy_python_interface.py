@@ -179,16 +179,29 @@ def cmd_getAll(servo_id):
 
 def receive_Message():
     #read all bytes until the start marker and discard, start marker is 2 bytes 0xFF 0xFF
-    counter = 0
+    counter_bytes_read = 0
+    counter_timeouts = 0
+    last_byte = None
     while True:
-        if serial_connection.read(1) == b'\xBF':
-            if serial_connection.read(1) == b'\xFF':
+        byte1 = serial_connection.read(1)
+        
+        if byte1: #if byte1 is not empty, i.e. it didnt timeout
+            if last_byte == b'\xBF' and byte1 == b'\xFF': # check if the last 2 bytes are the start marker
                 break
 
-        #timeout after a few tries
-        counter += 1
-        if counter > 10:
-            print("Error, no start marker found")
+            counter_bytes_read += 1
+            last_byte = byte1
+        else:
+            counter_timeouts += 1
+
+        if counter_bytes_read > 40:
+            print("Warning, no start marker found when reading serial buffer (40 bytes read), aborting read")
+            serial_connection.flush()
+            return None
+
+        if counter_timeouts > 2: # 2 timeouts is 30ms
+            print("Warning, too many timeouts, waited 30ms for start marker, aborting read")
+            serial_connection.flush()
             return None
 
 
@@ -208,7 +221,7 @@ def is_message_available():
 
 def start_serial(port='/dev/serial0', baudrate=230400):
     global serial_connection
-    ser = serial.Serial(port=port, baudrate=baudrate,timeout=0.1, bytesize=serial.EIGHTBITS)
+    ser = serial.Serial(port=port, baudrate=baudrate,timeout=0.015, bytesize=serial.EIGHTBITS)
 
     if not ser.isOpen():
         ser.open()
