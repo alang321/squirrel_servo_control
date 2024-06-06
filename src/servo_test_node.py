@@ -6,6 +6,7 @@ from squirrel_servo_control.msg import motor_speed
 from squirrel_servo_control.msg import servo_enable_torque
 from squirrel_servo_control.msg import servo_calibrate_zero
 import scripts.teensy_python_interface as teensy
+import json
 import time
 
 def tester():
