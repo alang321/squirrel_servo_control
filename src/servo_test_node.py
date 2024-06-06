@@ -17,6 +17,7 @@ def tester():
     pub_enable = rospy.Publisher('servo_enable_torque', servo_enable_torque, queue_size=10)
     pub_zero = rospy.Publisher('servo_set_zero_position', servo_calibrate_zero, queue_size=10)
     servo_list = json.loads(rospy.get_param('~servo_list', []))
+    servo_list = [1]
 
     time.sleep(.5)
 
