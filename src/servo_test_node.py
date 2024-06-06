@@ -46,17 +46,23 @@ def tester():
     current_pos_motor2 = 1100
     id = 0
 
+    for idx in servo_list:
+        msg = servo_enable_torque()
+        msg.servo_id = idx
+        msg.enable = True
+        pub_enable.publish(msg)
+
 
     while not rospy.is_shutdown():
-        current_pos_servo += servo_step
-        if current_pos_servo >= 2200:
-            current_pos_servo = 1900
+        # current_pos_servo += servo_step
+        # if current_pos_servo >= 2200:
+        #     current_pos_servo = 1900
 
-        for idx in servo_list:
-            msg = servo_position()
-            msg.servo_id = idx
-            msg.position = current_pos_servo
-            pub_pos.publish(msg)
+        # for idx in servo_list:
+        #     msg = servo_position()
+        #     msg.servo_id = idx
+        #     msg.position = current_pos_servo
+        #     pub_pos.publish(msg)
 
         rate.sleep()
 
