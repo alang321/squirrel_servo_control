@@ -50,7 +50,7 @@ def teensy_comm():
     rospy.Subscriber("servo_set_zero_position", servo_calibrate_zero, callback_set_zero)
 
     duration = 1/feedback_frequency/len(servo_list)
-    rospy.Timer(rospy.Duration(duration), callback_timer)
+    #rospy.Timer(rospy.Duration(duration), callback_timer)
 
 
     rospy.spin()
