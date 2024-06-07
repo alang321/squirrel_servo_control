@@ -39,7 +39,7 @@ reply_identifier = {
 #START_BYTE = b'\x9A'
 #sending messages
 struct_str_cmd_set_serial_port = '<bB'
-struct_str_cmd_enable_driver = '>bB?'
+struct_str_cmd_enable_driver = '<bB?'
 struct_str_cmd_set_speed = '<bBh'
 struct_str_cmd_set_pos = '<bBh'
 struct_str_cmd_get_pos = '<bB'
