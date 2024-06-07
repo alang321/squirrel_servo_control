@@ -109,6 +109,7 @@ def writeToSerial(payload_out):
     
     serial_connection.write(b'\xBF')
     serial_connection.write(b'\xFF')
+    serial_connection.write(b'\x01')
     serial_connection.write(payload_out)
     serial_connection.flush()
 
