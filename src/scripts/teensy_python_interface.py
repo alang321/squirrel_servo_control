@@ -103,11 +103,13 @@ def writeToSerial(payload_out):
     
     print(b'\xBF')
     print(b'\xFF')
-    print(payload_out.hex())
+
     
     serial_connection.write(b'\xBF')
     serial_connection.write(b'\xFF')
-    serial_connection.write(payload_out)
+    #serial_connection.write(payload_out)
+    for byte in payload_out:
+        serial_connection.write(payload_out)
     serial_connection.flush()
 
 def cmd_setSerialPort(port_id):
