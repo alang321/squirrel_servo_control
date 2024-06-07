@@ -115,6 +115,7 @@ def cmd_setSerialPort(port_id):
     writeToSerial(struct_var)
 
 def cmd_enableServo(servo_id, enable):
+    print(struct_str_cmd_enable_driver)
     struct_var = struct.pack(struct_str_cmd_enable_driver, cmd_identifier['enable_servo'], servo_id, enable)
     writeToSerial(struct_var)
 
