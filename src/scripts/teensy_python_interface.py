@@ -100,6 +100,15 @@ def writeToSerial(payload_out):
     if len(payload_out) == 0:
         rospy.logwarn("Payload is empty")
         return
+    
+    print(b'\xBF')
+    print(b'\xFF')
+    print(payload_out.hex())
+    
+    serial_connection.write(b'\xBF')
+    serial_connection.write(b'\xFF')
+    serial_connection.write(payload_out)
+
     serial_connection.write(b'\xBF')
     serial_connection.write(b'\xFF')
     serial_connection.write(payload_out)
