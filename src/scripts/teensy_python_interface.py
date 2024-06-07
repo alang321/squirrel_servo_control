@@ -101,15 +101,8 @@ def writeToSerial(payload_out):
         rospy.logwarn("Payload is empty")
         return
     
-    print(b'\xBF')
-    print(b'\xFF')
-    test = ''.join(format(x, '02x') for x in payload_out)
-    print(test)
-
-    
     serial_connection.write(b'\xBF')
     serial_connection.write(b'\xFF')
-    serial_connection.write(b'\x01')
     serial_connection.write(payload_out)
     serial_connection.flush()
 

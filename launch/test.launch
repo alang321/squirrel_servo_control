@@ -1,7 +1,7 @@
 <launch>
 
 	
-	<arg name="servo_list" default="[1]"/>
+	<arg name="servo_list" default="[e]"/>
 	<arg name="serial_port" default="/dev/ttyAMA1"/>
 	<arg name="feedback_frequency" default="3.0"/>
 
